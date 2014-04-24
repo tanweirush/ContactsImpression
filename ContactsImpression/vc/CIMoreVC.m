@@ -9,17 +9,20 @@
 #import "CIMoreVC.h"
 #import "PushViewController+UINavigationController.h"
 #import "CIFeedbackVC.h"
+#import "HSLoaddingVC.h"
 
 @interface CIMoreVC ()
 
 @property (nonatomic, retain) NetServiceManager *net;
 @property (nonatomic, retain) CILoginVC *vc_login;
+@property (nonatomic, retain) HSLoaddingVC *loadding;
 
 @end
 
 @implementation CIMoreVC
 @synthesize net = _net;
 @synthesize vc_login = _vc_login;
+@synthesize loadding = _loadding;
 
 - (id)init
 {
@@ -119,19 +122,14 @@
     NSLog(@"%@", m);
 }
 
--(void)VCodeData:(id)data Tag:(NSInteger)tag
-{
-    NSLog(@"%@", data);
-}
-
--(void)LoginData:(id)data Tag:(NSInteger)tag
-{
-    NSLog(@"%@", data);
-}
-
 -(void)LogoutData:(id)data Tag:(NSInteger)tag
 {
+    [self.loadding hide];
+    [self.loadding.view removeFromSuperview];
+    self.loadding = nil;
+    
     [UserDef setUserDefValue:@"" keyName:USER_NAME];
+    //退出登录，修改用户s
     [UserDef setUserDefValue:[data objectForKey:CTRL_Session] keyName:USER_SESSION];
     [self OnMore:nil];
 }
@@ -144,6 +142,11 @@
     }
     else if (buttonIndex == 1)
     {//确定退出
+        self.loadding = [[HSLoaddingVC alloc] initWithView:self.view
+                                                      Type:LOADDING_DEF];
+        [self.view addSubview:self.loadding.view];
+        [self.loadding setTipText:@"退出中"];
+        [self.loadding show];
         self.net = [[NetServiceManager alloc] init];
         [self.net setDelegate:self];
         [self.net Logout:[[NSMutableDictionary alloc] init]];
