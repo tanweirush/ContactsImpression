@@ -34,6 +34,7 @@
 -(void)SetEvaluateData:(id)data Tag:(NSInteger)tag;
 -(void)SetReadEvaluateData:(id)data Tag:(NSInteger)tag;
 -(void)UserInfoData:(id)data Tag:(NSInteger)tag;
+-(void)LogoutData:(id)data Tag:(NSInteger)tag;
 -(void)ImageData:(id)data Tag:(NSInteger)tag;
 -(void)CheckUpData:(BOOL)NeedUpdata Tag:(NSInteger)tag;
 
@@ -57,6 +58,7 @@
 -(void)SetEvaluate:(NSMutableDictionary*)postData;
 -(void)SetReadEvaluate:(NSMutableDictionary*)postData;
 -(void)GetUserInfo:(NSMutableDictionary*)postData;
+-(void)Logout:(NSMutableDictionary*)postData;
 -(void)GetImage:(NSString*)imgPath;
 -(void)CheckUpData;
 

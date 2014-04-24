@@ -129,6 +129,13 @@
     NSLog(@"%@", data);
 }
 
+-(void)LogoutData:(id)data Tag:(NSInteger)tag
+{
+    [UserDef setUserDefValue:@"" keyName:USER_NAME];
+    [UserDef setUserDefValue:[data objectForKey:CTRL_Session] keyName:USER_SESSION];
+    [self OnMore:nil];
+}
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
@@ -139,9 +146,7 @@
     {//确定退出
         self.net = [[NetServiceManager alloc] init];
         [self.net setDelegate:self];
-        
-        [UserDef setUserDefValue:@"" keyName:USER_NAME];
-        [self OnMore:nil];
+        [self.net Logout:[[NSMutableDictionary alloc] init]];
     }
 }
 @end

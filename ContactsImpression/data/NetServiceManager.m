@@ -27,6 +27,7 @@
 #define XU_ACTION_SETEVALUATE @"setevaluate"
 #define XU_ACTION_SETREAD @"setread"
 #define XU_ACTION_USERINFO @"userinfo"
+#define XU_ACTION_LOGOUT @"logout"
 
 /**
  *  网络操作列表
@@ -77,6 +78,10 @@ typedef NS_ENUM(NSInteger, NetTagType)
      *  获取用户信息
      */
     na_userinfo,
+    /**
+     *  登出
+     */
+    na_logout,
     
     
     /**
@@ -338,6 +343,31 @@ static NSDate *s_time;
     self.request = request;
 }
 
+-(void)Logout:(NSMutableDictionary *)postData
+{
+    NSString *s = [UserDef getUserDefValue:USER_SESSION];
+    if (s && s.length > 0)
+    {
+        [postData setValue:s forKey:CTRL_Session];
+    }
+    else
+    {
+        [self.delegate NoNeedUpdata:self.tag Msg:@"您尚未登录" Result:1];
+        return;
+    }
+    
+    NSURL *url = XU_URL(XU_ACTION_LOGOUT);
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request appendPostData:[postData JSONData]];
+    [request setRequestMethod:@"POST"];
+    [request setTag:na_logout];
+    [request setTimeOutSeconds:XU_NET_TIMEOUT];
+    [request setNumberOfTimesToRetryOnTimeout:5];
+    [request startAsynchronous];
+    self.request = request;
+}
+
 -(void)GetImage:(NSString*)imgPath
 {
     NSURL *url = XU_IMGURL(imgPath);
@@ -481,6 +511,11 @@ static NSDate *s_time;
         case na_userinfo:
         {
             [self.delegate UserInfoData:dic Tag:self.tag];
+        }
+            break;
+        case na_logout:
+        {
+            [self.delegate LogoutData:dic Tag:self.tag];
         }
             break;
         case na_img:
