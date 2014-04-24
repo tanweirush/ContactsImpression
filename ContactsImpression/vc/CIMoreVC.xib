@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CIMoreVC">
+            <connections>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6s-V5-Lgh">
+                    <rect key="frame" x="5" y="508" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="aFr-lO-YJd"/>
+                        <constraint firstAttribute="width" constant="50" id="zMq-bl-2Sr"/>
+                    </constraints>
+                    <state key="normal" image="more.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="OnMore:" destination="-1" eventType="touchUpInside" id="psZ-Xx-zdP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoN-BE-coB">
+                    <rect key="frame" x="130" y="268" width="60" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" backgroundImage="suggestion.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="OnFeedback:" destination="-1" eventType="touchUpInside" id="aGX-E2-Y2M"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDX-c3-WCm">
+                    <rect key="frame" x="130" y="348" width="60" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" backgroundImage="appstore.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="OnGoScore:" destination="-1" eventType="touchUpInside" id="N4B-YG-dbn"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dB-WO-jW6">
+                    <rect key="frame" x="130" y="428" width="60" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" backgroundImage="exit.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="OnLogout:" destination="-1" eventType="touchUpInside" id="ZfJ-Lh-BQZ"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="propaganda.png" translatesAutoresizingMaskIntoConstraints="NO" id="TPJ-KP-log">
+                    <rect key="frame" x="59" y="114" width="203" height="104"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="propaganda1.png" translatesAutoresizingMaskIntoConstraints="NO" id="F0k-LT-Ozj">
+                    <rect key="frame" x="185" y="65" width="85" height="49"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="OoN-BE-coB" firstAttribute="top" secondItem="TPJ-KP-log" secondAttribute="bottom" constant="50" id="0Px-7O-lTs"/>
+                <constraint firstItem="6dB-WO-jW6" firstAttribute="top" secondItem="WDX-c3-WCm" secondAttribute="bottom" constant="20" id="4Z8-Qg-dwu"/>
+                <constraint firstItem="TPJ-KP-log" firstAttribute="top" secondItem="F0k-LT-Ozj" secondAttribute="bottom" id="4dA-XO-gUg"/>
+                <constraint firstAttribute="bottom" secondItem="6dB-WO-jW6" secondAttribute="bottom" constant="80" id="Bba-MD-b9x"/>
+                <constraint firstItem="WDX-c3-WCm" firstAttribute="top" secondItem="OoN-BE-coB" secondAttribute="bottom" constant="20" id="HXJ-Ct-DCn"/>
+                <constraint firstItem="N6s-V5-Lgh" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="5" id="Icy-z5-ISU"/>
+                <constraint firstAttribute="centerX" secondItem="OoN-BE-coB" secondAttribute="centerX" id="Rq2-9g-XSO"/>
+                <constraint firstItem="OoN-BE-coB" firstAttribute="centerX" secondItem="WDX-c3-WCm" secondAttribute="centerX" id="fvY-G3-wwI"/>
+                <constraint firstItem="6dB-WO-jW6" firstAttribute="centerX" secondItem="WDX-c3-WCm" secondAttribute="centerX" id="gEj-IQ-GRv"/>
+                <constraint firstAttribute="bottom" secondItem="N6s-V5-Lgh" secondAttribute="bottom" constant="10" id="iB2-9r-WgM"/>
+                <constraint firstAttribute="centerX" secondItem="TPJ-KP-log" secondAttribute="centerX" id="q5i-uR-o6F"/>
+                <constraint firstAttribute="trailing" secondItem="F0k-LT-Ozj" secondAttribute="trailing" constant="50" id="vuj-6a-56g"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="appstore.png" width="60" height="60"/>
+        <image name="exit.png" width="60" height="60"/>
+        <image name="more.png" width="25" height="25"/>
+        <image name="propaganda.png" width="203" height="104"/>
+        <image name="propaganda1.png" width="85" height="49"/>
+        <image name="suggestion.png" width="60" height="60"/>
+    </resources>
+</document>

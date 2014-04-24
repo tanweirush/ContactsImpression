@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CIEvaluateListVC">
+            <connections>
+                <outlet property="tbv" destination="okK-EG-pOd" id="z2T-LU-wxa"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="100" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="okK-EG-pOd" customClass="PullTableView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="wHd-tx-0MP"/>
+                        <outlet property="delegate" destination="-1" id="F8G-Vb-kEp"/>
+                        <outlet property="pullDelegate" destination="-1" id="nix-5P-P5x"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="okK-EG-pOd" firstAttribute="top" secondItem="1" secondAttribute="top" id="2eu-6z-ljP"/>
+                <constraint firstItem="okK-EG-pOd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="5Tc-0C-HbM"/>
+                <constraint firstAttribute="trailing" secondItem="okK-EG-pOd" secondAttribute="trailing" id="TjE-8U-XdR"/>
+                <constraint firstAttribute="bottom" secondItem="okK-EG-pOd" secondAttribute="bottom" id="ZMH-Ty-na5"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
