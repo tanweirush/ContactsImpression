@@ -137,6 +137,9 @@
     }
     else if (buttonIndex == 1)
     {//确定退出
+        self.net = [[NetServiceManager alloc] init];
+        [self.net setDelegate:self];
+        
         [UserDef setUserDefValue:@"" keyName:USER_NAME];
         [self OnMore:nil];
     }
