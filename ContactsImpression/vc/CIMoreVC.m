@@ -119,6 +119,9 @@
 
 -(void)NoNeedUpdata:(NSInteger)tag Msg:(NSString *)m Result:(NSInteger)r
 {
+    [self.loadding hide];
+    [self.loadding.view removeFromSuperview];
+    self.loadding = nil;
     NSLog(@"%@", m);
 }
 
