@@ -99,7 +99,7 @@
         [self.view3 setAnimationDuration:5.0f];
         [self.view3 setAnimationRepeatCount:0];
         [self.view setBackgroundColor:UIColorFromARGB(0x22000000)];
-        self.view2.layer.cornerRadius = 10;
+        self.view2.layer.cornerRadius = 20;
     }
     
     [self hide];

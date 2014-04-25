@@ -9,7 +9,6 @@
 #import "CIReviewListVC.h"
 #import "PushViewController+UINavigationController.h"
 #import "CITitleV.h"
-#import "CIMoreVC.h"
 #import "CIContactData.h"
 #import "CIContactListTVC.h"
 #import "CIEvaluateListVC.h"
@@ -34,12 +33,15 @@ NSInteger s_maxEvaluateNum = 0;
 @property (nonatomic, assign) NSInteger i_trendPage;
 @property (nonatomic, assign) BOOL bCanLoad;
 @property (nonatomic, retain) HSLoaddingVC *loadding;
+@property (nonatomic, retain) CIMoreVC *vc_more;
 
 @property (nonatomic, strong) CIContactData *contactData;
 @property (nonatomic, retain) NSArray *phones;
 
 @property (nonatomic, assign) int iUserInfoTag;
 @property (nonatomic, assign) int iNeedHideLoad;
+@property (nonatomic, assign) BOOL bIsLogoutBack;
+@property (nonatomic, assign) BOOL bIsLoginBack;
 
 @end
 
@@ -53,6 +55,7 @@ NSInteger s_maxEvaluateNum = 0;
 @synthesize trend_datas = _trend_datas;
 @synthesize i_trendPage = _i_trendPage;
 @synthesize loadding = _loadding;
+@synthesize vc_more = _vc_more;
 
 - (id)init
 {
@@ -63,6 +66,8 @@ NSInteger s_maxEvaluateNum = 0;
         self.timeline_datas = [[NSMutableArray alloc] init];
         self.bCanLoad = NO;
         self.iNeedHideLoad = 0;
+        self.bIsLogoutBack = NO;
+        self.bIsLoginBack = NO;
     }
     return self;
 }
@@ -118,7 +123,22 @@ NSInteger s_maxEvaluateNum = 0;
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if ([self.btn_other isSelected])
+    if (self.bIsLogoutBack)
+    {
+        self.bIsLogoutBack = NO;
+        
+        [self.btn_other setSelected:YES];
+        [self.btn_self setSelected:NO];
+        [self.vc_timeline.view setHidden:NO];
+        [self.vc_myevaluate.view setHidden:YES];
+        
+        [self.timeline_datas removeAllObjects];
+        [self.trend_datas removeAllObjects];
+        CITitleV *v = [[CITitleV alloc] initWithTitle:@"老友说(未验证)"];
+        [self.navigationItem setTitleView:v];
+        [self.vc_timeline DataLoadStart];
+    }
+    else if ([self.btn_other isSelected])
     {
         NSString *phone = [UserDef getUserDefValue:USER_NAME];
         CITitleV *v = nil;
@@ -140,6 +160,21 @@ NSInteger s_maxEvaluateNum = 0;
     else if (self.bCanLoad && [self.btn_self isSelected] && [self.trend_datas count] == 0)
     {
         [self.vc_myevaluate DataLoadStart];
+    }
+    
+    if (self.bIsLoginBack)
+    {
+        self.bIsLoginBack = NO;
+        ++self.iNeedHideLoad;
+        [self.loadding setTipText:@"联系好友中"];
+        [self.loadding show];
+        //获取用户阅读条数
+        NetServiceManager *net = [[NetServiceManager alloc] init];
+        self.iUserInfoTag = ++s_tag;
+        [net setTag:self.iUserInfoTag];
+        [net setDelegate:self];
+        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
+        [self.nets addObject:net];
     }
 }
 
@@ -230,10 +265,13 @@ NSInteger s_maxEvaluateNum = 0;
 
 -(void)OnMore:(id)sender
 {
+    self.vc_more = nil;
     CIMoreVC *vc = [[CIMoreVC alloc] init];
     [self.navigationController pushViewController:vc
                                    TransitionType:@"push"
                                           SubType:@"fromBottom"];
+    [vc setDelegate:self];
+    self.vc_more = vc;
 }
 
 -(void)OnFriends:(id)sender
@@ -396,6 +434,22 @@ NSInteger s_maxEvaluateNum = 0;
                     }];
 }
 
+-(void)CIMoreVC:(CIMoreVC *)vc Logout:(BOOL)bLogout
+{
+    if (bLogout)
+    {
+        self.bIsLogoutBack = YES;
+    }
+}
+
+-(void)CIMoreVC:(CIMoreVC *)vc Login:(BOOL)bLogin
+{
+    if (bLogin)
+    {
+        self.bIsLoginBack = YES;
+    }
+}
+
 /**
  *  弹出框回掉
  */
@@ -437,6 +491,14 @@ NSInteger s_maxEvaluateNum = 0;
     if (success)
     {
         [self getTrendData];
+        
+        //获取用户阅读条数
+        NetServiceManager *net = [[NetServiceManager alloc] init];
+        self.iUserInfoTag = ++s_tag;
+        [net setTag:self.iUserInfoTag];
+        [net setDelegate:self];
+        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
+        [self.nets addObject:net];
     }
 }
 
@@ -550,6 +612,10 @@ NSInteger s_maxEvaluateNum = 0;
             ++self.i_timelinePage;
             [self.vc_timeline ReloadTableViewWithData:self.timeline_datas];
         }
+        else
+        {
+            [self.vc_timeline DataLoadOver];
+        }
     }
     else
     {
@@ -573,6 +639,10 @@ NSInteger s_maxEvaluateNum = 0;
             [self.trend_datas addObjectsFromArray:arr];
             ++self.i_trendPage;
             [self.vc_myevaluate ReloadTableViewWithData:self.trend_datas];
+        }
+        else
+        {
+            [self.vc_myevaluate DataLoadOver];
         }
     }
     else

@@ -60,7 +60,6 @@ extern int s_maxEvaluateNum;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    
     UIButton *btnOK = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnOK setFrame:CGRectMake(0, 0, 44, 44)];
     [btnOK setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateNormal];
@@ -92,7 +91,7 @@ extern int s_maxEvaluateNum;
     if (phone == nil || phone.length == 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"您还没有验证手机号码，验证手机号码后就可以看到您的朋友们对您的评论啦！"
+                                                     message:@"您还没有验证手机号码，验证手机号码后就可以评论您的老友啦！"
                                                     delegate:self
                                            cancelButtonTitle:@"取消"
                                            otherButtonTitles:@"确定", nil];

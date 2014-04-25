@@ -11,16 +11,20 @@
 #import "CIFeedbackVC.h"
 #import "HSLoaddingVC.h"
 
+static int s_tag = 0;
+extern NSInteger s_maxEvaluateNum;
+extern NSInteger s_maxReadNum;
+
 @interface CIMoreVC ()
 
-@property (nonatomic, retain) NetServiceManager *net;
+@property (nonatomic, retain) NSMutableArray *nets;
 @property (nonatomic, retain) CILoginVC *vc_login;
 @property (nonatomic, retain) HSLoaddingVC *loadding;
 
 @end
 
 @implementation CIMoreVC
-@synthesize net = _net;
+@synthesize nets = _nets;
 @synthesize vc_login = _vc_login;
 @synthesize loadding = _loadding;
 
@@ -29,6 +33,7 @@
     self = [super initWithNibName:@"CIMoreVC" bundle:nil];
     if (self) {
         // Custom initialization
+        self.nets = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -65,8 +70,12 @@
 
 -(IBAction)OnMore:(id)sender
 {
+    for (NetServiceManager *net in self.nets)
+    {
+        [net CancelRequest];
+    }
     self.vc_login = nil;
-    self.net = nil;
+    self.nets = nil;
     [self.navigationController popViewControllerWithTransitionType:@"push"
                                                            SubType:@"fromTop"];
 }
@@ -114,26 +123,41 @@
     {
         [(UIButton*)[self.view viewWithTag:10] setBackgroundImage:[UIImage imageNamed:@"exit.png"]
                                                          forState:UIControlStateNormal];
+        if ([self.delegate respondsToSelector:@selector(CIMoreVC:Login:)])
+        {
+            [self.delegate CIMoreVC:self Login:YES];
+        }
     }
 }
 
 -(void)NoNeedUpdata:(NSInteger)tag Msg:(NSString *)m Result:(NSInteger)r
 {
+    [self.nets RemoveObjectWithTag:tag];
+    [self LogoutResetDataWithData:nil];
+    if ([self.delegate respondsToSelector:@selector(CIMoreVC:Logout:)])
+    {
+        //即使网络错误，也返回退出成功
+        [self.delegate CIMoreVC:self Logout:YES];
+    }
     [self.loadding hide];
     [self.loadding.view removeFromSuperview];
     self.loadding = nil;
-    NSLog(@"%@", m);
+    [self OnMore:nil];
 }
 
 -(void)LogoutData:(id)data Tag:(NSInteger)tag
 {
+    [self.nets RemoveObjectWithTag:tag];
+    
+    [self LogoutResetDataWithData:data];
+    if ([self.delegate respondsToSelector:@selector(CIMoreVC:Logout:)])
+    {
+        [self.delegate CIMoreVC:self Logout:YES];
+    }
     [self.loadding hide];
     [self.loadding.view removeFromSuperview];
     self.loadding = nil;
     
-    [UserDef setUserDefValue:@"" keyName:USER_NAME];
-    //退出登录，修改用户s
-    [UserDef setUserDefValue:[data objectForKey:CTRL_Session] keyName:USER_SESSION];
     [self OnMore:nil];
 }
 
@@ -150,9 +174,30 @@
         [self.view addSubview:self.loadding.view];
         [self.loadding setTipText:@"退出中"];
         [self.loadding show];
-        self.net = [[NetServiceManager alloc] init];
-        [self.net setDelegate:self];
-        [self.net Logout:[[NSMutableDictionary alloc] init]];
+        NetServiceManager *net = [[NetServiceManager alloc] init];
+        [net setDelegate:self];
+        [net setTag:++s_tag];
+        [net Logout:[[NSMutableDictionary alloc] init]];
+        [self.nets addObject:net];
     }
+}
+
+-(void)LogoutResetDataWithData:(id)data
+{
+    if (data != nil)
+    {
+        NSString *s = [data objectForKey:CTRL_Session];
+        //退出登录，修改通讯录id
+        [UserDef setUserDefValue:s keyName:USER_SESSION];
+        //修改用户的通讯录上传时间为今天
+        [UserDef setUserDefValue:[NSDate date] keyName:LASTUPDATE(s)];
+    }
+    [UserDef setUserDefValue:@"" keyName:USER_NAME];
+    //归零今日阅读/评论数
+    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
+    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
+    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
+    s_maxReadNum = 0;
+    s_maxEvaluateNum = 0;
 }
 @end

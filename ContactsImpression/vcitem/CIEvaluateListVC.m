@@ -175,12 +175,12 @@ extern NSInteger s_maxReadNum;
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger count = [[UserDef getUserDefValue:LAST_WATCH_Count] integerValue];
-    
-    if (s_maxReadNum == count)
+    NSInteger c = s_maxReadNum - count;
+    if (c <= 0)
     {
         return [NSString stringWithFormat:@"评价好友\n可查看更多"];
     }
-    return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", (long)s_maxReadNum - count];
+    return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", c];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -284,7 +284,6 @@ extern NSInteger s_maxReadNum;
 
 - (void)pullTableViewDidTriggerLoadMore:(PullTableView *)pullTableView
 {//上拉更多
-    
     if ([self.delegate respondsToSelector:@selector(LoadmoreEvaluateList:)])
     {
         [self.delegate LoadmoreEvaluateList:self];

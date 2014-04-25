@@ -227,6 +227,8 @@ static int s_tag = 0;
     
     NSString *s = [data objectForKey:CTRL_Session];
     [UserDef setUserDefValue:s keyName:USER_SESSION];
+    //修改用户的通讯录上传时间为今天
+    [UserDef setUserDefValue:[NSDate date] keyName:LASTUPDATE(s)];
     
     if ([self.delegate respondsToSelector:@selector(LoginResult:)])
     {

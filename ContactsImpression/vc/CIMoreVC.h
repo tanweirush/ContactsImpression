@@ -10,7 +10,18 @@
 #import "NetServiceManager.h"
 #import "CILoginVC.h"
 
+@class CIMoreVC;
+
+@protocol CIMoreVCDelegate <NSObject>
+
+-(void)CIMoreVC:(CIMoreVC*)vc Logout:(BOOL)bLogout;
+-(void)CIMoreVC:(CIMoreVC*)vc Login:(BOOL)bLogin;
+
+@end
+
 @interface CIMoreVC : UIViewController<NetFinishedDelegate,
 UIAlertViewDelegate,
 CILoginVCDelegate>
+
+@property (nonatomic, retain) id<CIMoreVCDelegate> delegate;
 @end

@@ -11,13 +11,15 @@
 #import "NetServiceManager.h"
 #import "CIEvaluateListVC.h"
 #import "CIContactData.h"
+#import "CIMoreVC.h"
 
 @interface CIReviewListVC : UIViewController<
 UIAlertViewDelegate,
 CILoginVCDelegate,
 NetFinishedDelegate,
 CIContactDataDelegate,
-CIEvaluateListVCDelegate>
+CIEvaluateListVCDelegate,
+CIMoreVCDelegate>
 
 @property (nonatomic, retain) IBOutlet UIView *v_tip;
 
