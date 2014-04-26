@@ -43,6 +43,9 @@ NSInteger s_maxEvaluateNum = 0;
 @property (nonatomic, assign) BOOL bIsLogoutBack;
 @property (nonatomic, assign) BOOL bIsLoginBack;
 
+
+@property (nonatomic, assign) BOOL bIsShowRelogin;;
+
 @end
 
 @implementation CIReviewListVC
@@ -134,9 +137,12 @@ NSInteger s_maxEvaluateNum = 0;
         
         [self.timeline_datas removeAllObjects];
         [self.trend_datas removeAllObjects];
+        self.trend_datas = nil;
+        
         CITitleV *v = [[CITitleV alloc] initWithTitle:@"老友说(未验证)"];
         [self.navigationItem setTitleView:v];
         [self.vc_timeline DataLoadStart];
+        [self.vc_myevaluate ReloadTableViewWithData:[[NSMutableArray alloc] init]];
     }
     else if ([self.btn_other isSelected])
     {
@@ -455,14 +461,18 @@ NSInteger s_maxEvaluateNum = 0;
  */
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1 && buttonIndex == 1)
+    if (alertView.tag == 1)
     {
-        CILoginVC *vc = [[CILoginVC alloc] init];
-        [vc setDelegate:self];
-        [self.navigationController pushViewController:vc
-                                       TransitionType:@"push"
-                                              SubType:@"fromTop"];
-        self.loginVC = vc;
+        self.bIsShowRelogin = NO;
+        if (buttonIndex == 1)
+        {
+            CILoginVC *vc = [[CILoginVC alloc] init];
+            [vc setDelegate:self];
+            [self.navigationController pushViewController:vc
+                                           TransitionType:@"push"
+                                                  SubType:@"fromTop"];
+            self.loginVC = vc;
+        }
     }
     else if (alertView.tag == 2 && buttonIndex == 0)
     {//用户不同意上传通讯录
@@ -562,6 +572,10 @@ NSInteger s_maxEvaluateNum = 0;
     
     if (r == Return_NeedRelogin)
     {//需要重新验证
+        if (self.bIsShowRelogin)
+        {
+            return;
+        }
         if (m == nil || m.length == 0)
         {
             m = @"请重新验证手机号码";
@@ -574,6 +588,7 @@ NSInteger s_maxEvaluateNum = 0;
         [av setTag:1];
         [av setDelegate:self];
         [av show];
+        self.bIsShowRelogin = YES;
     }
     else if (tag < 0)
     {
