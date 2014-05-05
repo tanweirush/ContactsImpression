@@ -79,7 +79,13 @@ extern int s_maxEvaluateNum;
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
+{
+    self.loadding = nil;
+    self.net = nil;
+}
+
+-(void)viewWillAppear:(BOOL)animated
 {
     self.star = 4;
     for (NSInteger i = 1; i <= self.star; ++i)
@@ -87,6 +93,7 @@ extern int s_maxEvaluateNum;
         [(UIButton*)[self.view viewWithTag:i] setSelected:YES];
     }
     
+    NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
     NSString *phone = [UserDef getUserDefValue:USER_NAME];
     if (phone == nil || phone.length == 0)
     {
@@ -98,22 +105,7 @@ extern int s_maxEvaluateNum;
         [av setTag:1];
         [av show];
     }
-    else
-    {
-        [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.333];
-    }
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    self.loadding = nil;
-    self.net = nil;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
-    if (count >= s_maxEvaluateNum)
+    else if (count >= s_maxEvaluateNum)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
                                                      message:@"今天已经说的太多啦，明天再来哦！"
@@ -124,6 +116,10 @@ extern int s_maxEvaluateNum;
         [av setTag:2];
         [av show];
         return;
+    }
+    else
+    {
+        [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.333];
     }
 }
 

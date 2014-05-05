@@ -12,6 +12,8 @@
 #import "HSLoaddingVC.h"
 
 static int s_tag = 0;
+extern NSInteger s_maxEvaluateNum;
+extern NSInteger s_maxReadNum;
 
 @interface CILoginVC ()
 
@@ -222,19 +224,38 @@ static int s_tag = 0;
 {
     NSLog(@"LoginData :\n%@", data);
     [self.nets RemoveObjectWithTag:tag];
-    [self.loadding setTipText:@"验证成功啦"];
-    [self.loadding hideAfterDelay:1.5];
     
     NSString *s = [data objectForKey:CTRL_Session];
     [UserDef setUserDefValue:s keyName:USER_SESSION];
     //修改用户的通讯录上传时间为今天
     [UserDef setUserDefValue:[NSDate date] keyName:LASTUPDATE(s)];
     
+    //获取用户阅读条数
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setTag:++s_tag];
+    [net setDelegate:self];
+    [net GetUserInfo:[[NSMutableDictionary alloc] init]];
+    [self.nets addObject:net];
+}
+
+-(void)UserInfoData:(id)data Tag:(NSInteger)tag
+{
+    [self.nets RemoveObjectWithTag:tag];
+    [self.loadding setTipText:@"验证成功啦"];
+    [self.loadding hideAfterDelay:1.5];
+    
+    s_maxReadNum = [[data objectForKey:CI_READNUM] integerValue];
+    s_maxEvaluateNum = [[data objectForKey:CI_EVLNUM] integerValue];
+    
+    //归零今日阅读/评论数
+    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
+    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
+    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
+    
     if ([self.delegate respondsToSelector:@selector(LoginResult:)])
     {
         [self.delegate LoginResult:YES];
     }
-    
     [self OnBack:nil];
 }
 @end

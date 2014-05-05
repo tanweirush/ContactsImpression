@@ -184,13 +184,16 @@ extern NSInteger s_maxReadNum;
 
 -(void)LogoutResetDataWithData:(id)data
 {
-    if (data != nil)
+    if (data != nil && [[NSNull null] isEqual:data])
     {
         NSString *s = [data objectForKey:CTRL_Session];
-        //退出登录，修改通讯录id
-        [UserDef setUserDefValue:s keyName:USER_SESSION];
-        //修改用户的通讯录上传时间为今天
-        [UserDef setUserDefValue:[NSDate date] keyName:LASTUPDATE(s)];
+        if (s && s.length > 0)
+        {
+            //退出登录，修改通讯录id
+            [UserDef setUserDefValue:s keyName:USER_SESSION];
+            //修改用户的通讯录上传时间为今天
+            [UserDef setUserDefValue:[NSDate date] keyName:LASTUPDATE(s)];
+        }
     }
     [UserDef setUserDefValue:@"" keyName:USER_NAME];
     //归零今日阅读/评论数

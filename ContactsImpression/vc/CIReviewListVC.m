@@ -259,6 +259,7 @@ NSInteger s_maxEvaluateNum = 0;
         ++self.iNeedHideLoad;
         [self.loadding setTipText:@"联系好友中"];
         [self.loadding show];
+        
         //获取用户阅读条数
         NetServiceManager *net = [[NetServiceManager alloc] init];
         self.iUserInfoTag = ++s_tag;
@@ -501,14 +502,6 @@ NSInteger s_maxEvaluateNum = 0;
     if (success)
     {
         [self getTrendData];
-        
-        //获取用户阅读条数
-        NetServiceManager *net = [[NetServiceManager alloc] init];
-        self.iUserInfoTag = ++s_tag;
-        [net setTag:self.iUserInfoTag];
-        [net setDelegate:self];
-        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
-        [self.nets addObject:net];
     }
 }
 
