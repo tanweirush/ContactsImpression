@@ -421,8 +421,8 @@ NSInteger s_maxEvaluateNum = 0;
                       duration:0.111
                        options:UIViewAnimationOptionAllowAnimatedContent
                     animations:^{
-                        [self.btn_self setAlpha:1.0];
-                        [self.btn_other setAlpha:1.0];
+                        [self.btn_self setAlpha:0.0];
+                        [self.btn_other setAlpha:0.0];
                     }
                     completion:^(BOOL finished) {
                     }];
@@ -434,8 +434,8 @@ NSInteger s_maxEvaluateNum = 0;
                       duration:0.111
                        options:UIViewAnimationOptionAllowAnimatedContent
                     animations:^{
-                        [self.btn_self setAlpha:0.0];
-                        [self.btn_other setAlpha:0.0];
+                        [self.btn_self setAlpha:1.0];
+                        [self.btn_other setAlpha:1.0];
                     }
                     completion:^(BOOL finished) {
                     }];

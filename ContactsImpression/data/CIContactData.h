@@ -36,7 +36,6 @@
 
 -(void)UpdateData;
 +(NSMutableArray*)contacts;
-+(NSArray*)needUpdateContactsIndexs;
 +(NSString*)Phone2Name:(id)phone;
 +(NSString*)Pid2Name:(NSInteger)pid;
 +(void)SetContactData:(NSArray*)data;

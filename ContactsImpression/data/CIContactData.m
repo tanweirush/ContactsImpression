@@ -9,7 +9,6 @@
 #import "CIContactData.h"
 
 static NSMutableArray *s_listContacts;
-static NSMutableArray *s_update;
 
 @interface CIContactData ()
 
@@ -27,10 +26,6 @@ static NSMutableArray *s_update;
         if (s_listContacts == nil)
         {
             s_listContacts = [[NSMutableArray alloc] init];
-        }
-        if (s_update == nil)
-        {
-            s_update = [[NSMutableArray alloc] init];
         }
     }
     return self;
@@ -74,7 +69,6 @@ static NSMutableArray *s_update;
     }
     
     NSMutableArray *listContacts = [[NSMutableArray alloc] init];
-    [s_update removeAllObjects];
     
     CFErrorRef error = NULL;
     CFArrayRef allPerson;
@@ -91,6 +85,7 @@ static NSMutableArray *s_update;
         CFRelease(cfSearchText);
     }
     
+    NSInteger iUpdate = 0;
     for(int i = 0; i < CFArrayGetCount(allPerson); i++)
     {
         ABRecordRef person = CFArrayGetValueAtIndex(allPerson, i);
@@ -100,15 +95,11 @@ static NSMutableArray *s_update;
         if (personData)
         {
             personData.pid = i;
-            if (update)
-            {
-                [s_update addObject:[NSNumber numberWithInt:i]];
-                [listContacts addObject:personData];
-            }
-            else
-            {
-                [listContacts addObject:personData];
-            }
+            [listContacts addObject:personData];
+        }
+        if (update)
+        {
+            ++iUpdate;
         }
     }
     
@@ -116,17 +107,12 @@ static NSMutableArray *s_update;
     
     CFRelease(addressBook);
     
-    [self.delegate ContactUpdateEnd:[s_update count]];
+    [self.delegate ContactUpdateEnd:iUpdate];
 }
 
 +(NSMutableArray*)contacts
 {
     return s_listContacts;
-}
-
-+(NSArray*)needUpdateContactsIndexs
-{
-    return s_update;
 }
 
 +(NSString*)Phone2Name:(id)phone
@@ -186,15 +172,12 @@ static NSMutableArray *s_update;
 +(void)SetContactData:(NSArray*)data
 {
     NSMutableArray *listContacts = [[NSMutableArray alloc] init];
-    s_update = [[NSMutableArray alloc] init];
-    int i = 0;
     for (NSDictionary *dic in data)
     {
         PersonData *personData = [[PersonData alloc] init];
         personData.name = [dic objectForKey:CI_NAME];
         personData.phone = [dic objectForKey:CI_PHONES];
         personData.pid = [[dic objectForKey:CI_PID] integerValue];
-        [s_update addObject:[NSNumber numberWithInt:i++]];
         [listContacts addObject:personData];
     }
     s_listContacts = listContacts;

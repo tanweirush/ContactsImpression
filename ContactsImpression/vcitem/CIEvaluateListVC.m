@@ -178,6 +178,11 @@ extern NSInteger s_maxReadNum;
     NSInteger c = s_maxReadNum - count;
     if (c <= 0)
     {
+        NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
+        if (count != 0)
+        {
+            return [NSString stringWithFormat:@"今日查看\n已达上限"];
+        }
         return [NSString stringWithFormat:@"评价好友\n可查看更多"];
     }
     return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", c];

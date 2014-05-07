@@ -119,6 +119,21 @@ extern int s_maxEvaluateNum;
     }
     else
     {
+        for (NSString *p in self.personData.phone)
+        {
+            if ([phone isEqualToString:p])
+            {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                             message:@"你赖皮哦，不能评价自己！"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"确定"
+                                                   otherButtonTitles:nil];
+                [av setDelegate:self];
+                [av setTag:2];
+                [av show];
+                return;
+            }
+        }
         [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.333];
     }
 }

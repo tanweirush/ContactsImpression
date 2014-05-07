@@ -51,10 +51,19 @@
         personPhone = [personPhone stringByReplacingOccurrencesOfString:@")" withString:@""];
         personPhone = [personPhone stringByReplacingOccurrencesOfString:@"-" withString:@""];
         personPhone = [personPhone stringByReplacingOccurrencesOfString:@" " withString:@""];
+        personPhone = [personPhone stringByReplacingOccurrencesOfString:@" " withString:@""];
         
         if ([personPhone hasPrefix:@"+86"])
         {
             personPhone = [personPhone substringFromIndex:3];
+        }
+        else if ([personPhone hasPrefix:@"86"])
+        {
+            personPhone = [personPhone substringFromIndex:2];
+        }
+        else if ([personPhone hasPrefix:@"0"])
+        {
+            personPhone = [personPhone substringFromIndex:1];
         }
         
         if (personPhone.length != 11)
