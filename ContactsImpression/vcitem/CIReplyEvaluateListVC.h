@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NetServiceManager.h"
 
-@interface CIReplyEvaluateListVC : UIViewController
+@interface CIReplyEvaluateListVC : UIViewController<UITableViewDataSource,
+UITableViewDelegate,
+NetFinishedDelegate>
 
+@property (nonatomic, retain) IBOutlet UITableView *tbv;
+
+- (id)initWithData:(NSDictionary*)data;
+- (void)addReply:(NSString*)newReply;
 @end

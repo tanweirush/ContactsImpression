@@ -15,12 +15,16 @@
 
 extern int s_maxEvaluateNum;
 
+#define Reply_Text @"回复"
+#define TimeLine_Text @"匿名对TA进行点评、爆糗、调侃、抱怨、还是表白，老友说，说什么都可以！"
+
 @interface CISetEvaluateVC ()
 
 @property (nonatomic, retain) PersonData *personData;
+@property (nonatomic, retain) NSDictionary *data;
 @property (nonatomic, retain) NetServiceManager *net;
 @property (nonatomic, retain) HSLoaddingVC *loadding;
-@property (nonatomic, assign) NSInteger star;
+@property (nonatomic, assign) CISetEvaluateType type;
 
 @end
 
@@ -28,14 +32,21 @@ extern int s_maxEvaluateNum;
 @synthesize personData = _personData;
 @synthesize net = _net;
 @synthesize loadding = _loadding;
-@synthesize star = _star;
 
-- (id)initWithData:(id)data
+- (id)initWithData:(id)data Type:(CISetEvaluateType)type
 {
     self = [super initWithNibName:@"CISetEvaluateVC" bundle:nil];
     if (self) {
         // Custom initialization
-        self.personData = data;
+        if (type == CISetEvaluateType_Reply)
+        {
+            self.data = data;
+        }
+        else if (type == CISetEvaluateType_Timeline)
+        {
+            self.personData = data;
+        }
+        self.type = type;
     }
     return self;
 }
@@ -44,13 +55,23 @@ extern int s_maxEvaluateNum;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    NSString *name = self.personData.name;
-    if (name.length == 0)
+    if (self.type == CISetEvaluateType_Timeline)
     {
-        name = [self.personData.phone objectAtIndex:0];
+        NSString *name = self.personData.name;
+        if (name.length == 0)
+        {
+            name = [self.personData.phone objectAtIndex:0];
+        }
+        CITitleV *title = [[CITitleV alloc] initWithTitle:[NSString stringWithFormat:@"说%@", name]];
+        [self.navigationItem setTitleView:title];
     }
-    CITitleV *title = [[CITitleV alloc] initWithTitle:[NSString stringWithFormat:@"说%@", name]];
-    [self.navigationItem setTitleView:title];
+    else if (self.type == CISetEvaluateType_Reply)
+    {
+        CITitleV *title = [[CITitleV alloc] initWithTitle:@"回复"];
+        [self.navigationItem setTitleView:title];
+    }
+    [self.tv_evaluate addSubview:self.lb_tip];
+    [self.lb_tip setFrame:CGRectMake(5, 5, 280, self.lb_tip.frame.size.height)];
     
     UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack setFrame:CGRectMake(0, 0, 44, 44)];
@@ -87,55 +108,48 @@ extern int s_maxEvaluateNum;
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.star = 4;
-    for (NSInteger i = 1; i <= self.star; ++i)
+    if (self.type == CISetEvaluateType_Timeline)
     {
-        [(UIButton*)[self.view viewWithTag:i] setSelected:YES];
-    }
-    
-    NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
-    NSString *phone = [UserDef getUserDefValue:USER_NAME];
-    if (phone == nil || phone.length == 0)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"您还没有验证手机号码，验证手机号码后就可以评论您的老友啦！"
-                                                    delegate:self
-                                           cancelButtonTitle:@"取消"
-                                           otherButtonTitles:@"确定", nil];
-        [av setTag:1];
-        [av show];
-    }
-    else if (count >= s_maxEvaluateNum)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"今天已经说的太多啦，明天再来哦！"
-                                                    delegate:self
-                                           cancelButtonTitle:@"确定"
-                                           otherButtonTitles:nil];
-        [av setDelegate:self];
-        [av setTag:2];
-        [av show];
-        return;
-    }
-    else
-    {
-        for (NSString *p in self.personData.phone)
+        [self.lb_tip setText:TimeLine_Text];
+        NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
+        NSString *phone = [UserDef getUserDefValue:USER_NAME];
+        if (count >= s_maxEvaluateNum)
         {
-            if ([phone isEqualToString:p])
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                         message:@"今天已经说的太多啦，明天再来哦！"
+                                                        delegate:self
+                                               cancelButtonTitle:@"确定"
+                                               otherButtonTitles:nil];
+            [av setDelegate:self];
+            [av setTag:2];
+            [av show];
+            return;
+        }
+        else
+        {
+            for (NSString *p in self.personData.phone)
             {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                             message:@"你赖皮哦，不能评价自己！"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"确定"
-                                                   otherButtonTitles:nil];
-                [av setDelegate:self];
-                [av setTag:2];
-                [av show];
-                return;
+                if ([phone isEqualToString:p])
+                {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                 message:@"你赖皮哦，不能评价自己！"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"确定"
+                                                       otherButtonTitles:nil];
+                    [av setDelegate:self];
+                    [av setTag:2];
+                    [av show];
+                    return;
+                }
             }
         }
-        [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.333];
+//        [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.333];
     }
+    else if (self.type == CISetEvaluateType_Reply)
+    {
+        [self.lb_tip setText:Reply_Text];
+    }
+    [self.lb_tip sizeToFit];
 }
 
 -(void)OnBack:(id)sender
@@ -144,53 +158,17 @@ extern int s_maxEvaluateNum;
     self.net = nil;
     [self.navigationController popViewControllerAnimated:YES];
 //    [self.navigationController popViewControllerWithTransitionType:@"push" SubType:@"fromLeft"];
-
 }
 
 -(void)OnOK:(id)sender
 {
-    if (self.tv_evaluate.text.length == 0)
+    if (self.type == CISetEvaluateType_Timeline)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"对你的老友，说点啥呗！"
-                                                    delegate:self
-                                           cancelButtonTitle:@"确定"
-                                           otherButtonTitles:nil];
-        [av show];
-        return;
+        [self SendTimeline];
     }
-    
-    [self.tv_evaluate resignFirstResponder];
-    if (self.loadding == nil)
+    else if (self.type == CISetEvaluateType_Reply)
     {
-        self.loadding = [[HSLoaddingVC alloc] initWithView:self.view Type:LOADDING_DEF];
-        [self.view addSubview:self.loadding.view];
-    }
-    [self.loadding setTipText:@"让点评⻜一会儿"];
-    [self.loadding show];
-    
-    NetServiceManager *net = [[NetServiceManager alloc] init];
-    [net setDelegate:self];
-    
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    [dic setValue:self.tv_evaluate.text forKey:CI_CONTENT];
-    [dic setValue:[NSNumber numberWithInteger:self.personData.pid] forKey:CI_PID];
-    [dic setValue:[NSNumber numberWithInteger:self.star] forKey:CI_STAR];
-    
-    [net SetEvaluate:dic];
-    self.net = net;
-}
-
--(IBAction)OnSelectStar:(id)sender
-{
-    self.star = [sender tag];
-    for (NSInteger i = 1; i <= self.star; ++i)
-    {
-        [(UIButton*)[self.view viewWithTag:i] setSelected:YES];
-    }
-    for (NSInteger i = self.star + 1; i <= 5; ++i)
-    {
-        [(UIButton*)[self.view viewWithTag:i] setSelected:NO];
+        [self SendReply];
     }
 }
 
@@ -212,9 +190,76 @@ extern int s_maxEvaluateNum;
     return TRUE;
 }
 
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [self.lb_tip setHidden:YES];
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (textView.text.length == 0)
+    {
+        [self.lb_tip setHidden:NO];
+    }
+}
+
 -(void)showKeyboard
 {
     [self.tv_evaluate becomeFirstResponder];
+}
+
+-(void)SendTimeline
+{
+    if (self.tv_evaluate.text.length == 0)
+    {
+        return;
+    }
+    
+    [self.tv_evaluate resignFirstResponder];
+    if (self.loadding == nil)
+    {
+        self.loadding = [[HSLoaddingVC alloc] initWithView:self.view Type:LOADDING_DEF];
+        [self.view addSubview:self.loadding.view];
+    }
+    [self.loadding setTipText:@"让点评⻜一会儿"];
+    [self.loadding show];
+    
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setDelegate:self];
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    [dic setValue:self.tv_evaluate.text forKey:CI_CONTENT];
+    [dic setValue:[NSNumber numberWithInteger:self.personData.pid] forKey:CI_PID];
+    
+    [net SetEvaluate:dic];
+    self.net = net;
+}
+
+-(void)SendReply
+{
+    if (self.tv_evaluate.text.length == 0)
+    {
+        return;
+    }
+    
+    [self.tv_evaluate resignFirstResponder];
+    if (self.loadding == nil)
+    {
+        self.loadding = [[HSLoaddingVC alloc] initWithView:self.view Type:LOADDING_DEF];
+        [self.view addSubview:self.loadding.view];
+    }
+    [self.loadding setTipText:@"让回复⻜一会儿"];
+    [self.loadding show];
+    
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setDelegate:self];
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    [dic setValue:self.tv_evaluate.text forKey:CI_CONTENT];
+    [dic setValue:[self.data objectForKey:CI_TID] forKey:CI_TID];
+    
+    [net SetReplyForTimeline:dic];
+    self.net = net;
 }
 
 /**
@@ -222,14 +267,7 @@ extern int s_maxEvaluateNum;
  */
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1 && buttonIndex == 1)
-    {
-        CILoginVC *vc = [[CILoginVC alloc] init];
-        [self.navigationController pushViewController:vc
-                                       TransitionType:@"push"
-                                              SubType:@"fromTop"];
-    }
-    else if ((alertView.tag == 1 || alertView.tag == 2) && buttonIndex == 0)
+    if ((alertView.tag == 1 || alertView.tag == 2) && buttonIndex == 0)
     {
 //        [self.navigationController popViewControllerWithTransitionType:@"push"
 //                                                               SubType:@"fromLeft"];
@@ -249,23 +287,6 @@ extern int s_maxEvaluateNum;
     self.net = nil;
     if (m && m.length > 0)
     {
-        [self.loadding hide];
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:m
-                                                    delegate:nil
-                                           cancelButtonTitle:@"确定"
-                                           otherButtonTitles:nil];
-        
-        if (r == Return_NeedRelogin)
-        {//需要重新验证
-            [av setDelegate:self];
-            [av setTag:0x8001];
-            return;
-        }
-        [av show];
-    }
-    else
-    {
         [self.loadding setTipText:@"网络抽疯啦"];
         [self.loadding hideAfterDelay:1.5];
     }
@@ -282,13 +303,25 @@ extern int s_maxEvaluateNum;
     }
     
     NSInteger count = [[UserDef getUserDefValue:LAST_EVALUATE_Count] integerValue];
-    if (count == 0)
+    if (count < 3)
     {
         NSInteger watch = [[UserDef getUserDefValue:LAST_WATCH_Count] integerValue];
         [UserDef setUserDefValue:[NSNumber numberWithInteger:--watch] keyName:LAST_WATCH_Count];
     }
     [UserDef setUserDefValue:[NSNumber numberWithInteger:++count] keyName:LAST_EVALUATE_Count];
     
+    [self OnBack:nil];
+}
+
+-(void)ReplyTimeLineData:(id)data Tag:(NSInteger)tag
+{
+    self.net = nil;
+    [self.loadding hide];
+    
+    if ([self.delegate respondsToSelector:@selector(SetEvaluate:Data:)])
+    {
+        [self.delegate SetEvaluate:self Data:self.tv_evaluate.text];
+    }
     [self OnBack:nil];
 }
 @end

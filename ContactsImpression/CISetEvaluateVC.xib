@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CISetEvaluateVC">
             <connections>
+                <outlet property="lb_tip" destination="N7Y-sb-I7E" id="MQR-mA-Dwt"/>
                 <outlet property="tv_evaluate" destination="v2u-X5-7dE" id="2yK-eS-2Hd"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -16,82 +17,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="给老友给个星" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOp-bH-bhb">
-                    <rect key="frame" x="10" y="20" width="90" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGZ-Pl-RGh">
-                    <rect key="frame" x="120" y="13" width="25" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="star.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="selected" backgroundImage="star_hover.png">
-                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted" backgroundImage="star_hover.png"/>
-                    <connections>
-                        <action selector="OnSelectStar:" destination="-1" eventType="touchUpInside" id="1gL-qN-SMn"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qe1-bT-jtl">
-                    <rect key="frame" x="155" y="13" width="25" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="star.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="selected" backgroundImage="star_hover.png"/>
-                    <state key="highlighted" backgroundImage="star_hover.png"/>
-                    <connections>
-                        <action selector="OnSelectStar:" destination="-1" eventType="touchUpInside" id="Fwg-w1-rX9"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyY-xT-noa">
-                    <rect key="frame" x="190" y="13" width="25" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="star.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="selected" backgroundImage="star_hover.png"/>
-                    <state key="highlighted" backgroundImage="star_hover.png"/>
-                    <connections>
-                        <action selector="OnSelectStar:" destination="-1" eventType="touchUpInside" id="rt0-3M-cl2"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dg9-dQ-sEN">
-                    <rect key="frame" x="225" y="13" width="25" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="star.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="selected" backgroundImage="star_hover.png"/>
-                    <state key="highlighted" backgroundImage="star_hover.png"/>
-                    <connections>
-                        <action selector="OnSelectStar:" destination="-1" eventType="touchUpInside" id="sO8-Kf-7Om"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFD-PT-D5k">
-                    <rect key="frame" x="260" y="13" width="25" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="star.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="selected" backgroundImage="star_hover.png"/>
-                    <state key="highlighted" backgroundImage="star_hover.png"/>
-                    <connections>
-                        <action selector="OnSelectStar:" destination="-1" eventType="touchUpInside" id="aKQ-yy-xqH"/>
-                    </connections>
-                </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-X5-7dE">
-                    <rect key="frame" x="10" y="58" width="300" height="250"/>
+                    <rect key="frame" x="10" y="15" width="300" height="250"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -106,28 +33,19 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="LOp-bH-bhb" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="2z5-Vd-pTt"/>
-                <constraint firstItem="HGZ-Pl-RGh" firstAttribute="leading" secondItem="LOp-bH-bhb" secondAttribute="trailing" constant="20" id="Fpt-7Q-GEb"/>
                 <constraint firstAttribute="trailing" secondItem="v2u-X5-7dE" secondAttribute="trailing" constant="10" id="GbT-Rj-YrD"/>
-                <constraint firstItem="LOp-bH-bhb" firstAttribute="bottom" secondItem="HGZ-Pl-RGh" secondAttribute="bottom" id="NDM-1w-LS7"/>
-                <constraint firstItem="LOp-bH-bhb" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="NPI-Hg-GNF"/>
-                <constraint firstItem="v2u-X5-7dE" firstAttribute="top" secondItem="LOp-bH-bhb" secondAttribute="bottom" constant="20" id="Nhk-af-KPL"/>
-                <constraint firstItem="dg9-dQ-sEN" firstAttribute="centerY" secondItem="dyY-xT-noa" secondAttribute="centerY" id="PD3-Ho-A2e"/>
-                <constraint firstItem="dyY-xT-noa" firstAttribute="centerY" secondItem="Qe1-bT-jtl" secondAttribute="centerY" id="QF5-Bp-mnO"/>
-                <constraint firstItem="dg9-dQ-sEN" firstAttribute="leading" secondItem="dyY-xT-noa" secondAttribute="trailing" constant="10" id="ZbJ-Ve-m5t"/>
-                <constraint firstItem="UFD-PT-D5k" firstAttribute="leading" secondItem="dg9-dQ-sEN" secondAttribute="trailing" constant="10" id="lcP-zI-W2H"/>
-                <constraint firstItem="dyY-xT-noa" firstAttribute="leading" secondItem="Qe1-bT-jtl" secondAttribute="trailing" constant="10" id="p41-nD-cKU"/>
-                <constraint firstItem="Qe1-bT-jtl" firstAttribute="leading" secondItem="HGZ-Pl-RGh" secondAttribute="trailing" constant="10" id="rC2-lc-LtB"/>
-                <constraint firstItem="UFD-PT-D5k" firstAttribute="centerY" secondItem="dg9-dQ-sEN" secondAttribute="centerY" id="s09-OU-dxk"/>
+                <constraint firstItem="v2u-X5-7dE" firstAttribute="top" secondItem="1" secondAttribute="top" constant="15" id="HQj-rG-vff"/>
                 <constraint firstItem="v2u-X5-7dE" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="yse-1U-laO"/>
-                <constraint firstItem="Qe1-bT-jtl" firstAttribute="centerY" secondItem="HGZ-Pl-RGh" secondAttribute="centerY" id="zec-Uh-zaD"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" id="N7Y-sb-I7E">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="21"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <nil key="highlightedColor"/>
+        </label>
     </objects>
-    <resources>
-        <image name="star.png" width="25" height="25"/>
-        <image name="star_hover.png" width="25" height="25"/>
-    </resources>
 </document>

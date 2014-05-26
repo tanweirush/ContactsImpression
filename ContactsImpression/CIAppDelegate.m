@@ -22,10 +22,30 @@
     self.root = [[UINavigationController alloc] init];
     self.vc_mainList = [[CIReviewListVC alloc] init];
     [self.root pushViewController:self.vc_mainList animated:NO];
+    
+    //引导页
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    if (![app_Version isEqualToString:[UserDef getUserDefValue:USER_LOCALVERSION]])
+    {
+        self.vc_guide = [[HSGuideVC alloc] init];
+        [self.vc_guide setDelegate:self];
+        [self.root pushViewController:self.vc_guide animated:NO];
+        
+        [self.root.navigationBar setHidden:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    else
+    {
+        [self.root.navigationBar setHidden:NO];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    }
+    [UserDef setUserDefValue:app_Version keyName:USER_LOCALVERSION];
+    
+    
     self.window.rootViewController = self.root;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
 //    if ([UINavigationBar instancesRespondToSelector:@selector(setBackgroundColor:)]){
 //        [[UINavigationBar appearance] setBackgroundColor:UIColorFromARGB(0xff0c6024)];
@@ -67,8 +87,12 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
     [self InitWatchData];
-    [self.vc_mainList updateContact];
+    if (self.vc_guide == nil)
+    {
+        [self updateContact];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -106,5 +130,30 @@
     [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
     [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
 #endif
+}
+
+-(void)updateContact
+{
+    [self.vc_mainList updateContact];
+}
+
+-(void)HSGuideVC:(HSGuideVC *)vc Start:(BOOL)start
+{
+    if (start)
+    {
+        [UIView transitionWithView:self.window.rootViewController.view
+                          duration:0.333
+                           options:UIViewAnimationOptionLayoutSubviews
+                        animations:^{
+                            [self.vc_guide.view setAlpha:0.0];
+                        } completion:^(BOOL finished) {
+                            [self.root popViewControllerAnimated:NO];
+                            self.vc_guide = nil;
+                            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+                            [self.root.navigationBar setHidden:NO];
+                        }];
+        
+        [self performSelector:@selector(updateContact) withObject:nil afterDelay:1.0];
+    }
 }
 @end

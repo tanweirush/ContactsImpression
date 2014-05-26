@@ -10,4 +10,10 @@
 
 @interface CIReplyEvaluateListItemVC : UIViewController
 
+@property (nonatomic, retain) IBOutlet UILabel *lb_floor;
+@property (nonatomic, retain) IBOutlet UILabel *lb_reply;
+
+- (id)initWithReply:(NSString*)reply Index:(NSInteger)index;
+
++(CGFloat)LabelHeighWithText:(NSString*)text;
 @end

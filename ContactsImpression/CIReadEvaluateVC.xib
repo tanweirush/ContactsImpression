@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CIReadEvaluateVC">
             <connections>
-                <outlet property="tv" destination="UOn-BR-wim" id="mL1-xL-uxN"/>
+                <outlet property="btn_praise" destination="9lu-Yg-Brt" id="BFQ-31-mPr"/>
+                <outlet property="iv_praise" destination="5HG-mC-6E3" id="khJ-i0-26f"/>
+                <outlet property="lb_content" destination="pKl-VP-UGe" id="OcF-lc-Ywi"/>
+                <outlet property="v_tool" destination="29T-Lf-eVu" id="mC8-N5-Coa"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -16,23 +19,92 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOn-BR-wim">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="pKl-VP-UGe">
+                    <rect key="frame" x="10" y="15" width="300" height="394"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Yg4-IA-FtF"/>
+                    </constraints>
+                    <mutableString key="text">LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel</mutableString>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29T-Lf-eVu">
+                    <rect key="frame" x="10" y="429" width="300" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lu-Yg-Brt">
+                            <rect key="frame" x="15" y="10" width="100" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="gd3-qi-gqP"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="赞" image="good.png">
+                                <color key="titleColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="disabled" image="good_hover.png"/>
+                            <state key="selected" image="good_hover.png"/>
+                            <state key="highlighted" image="good_hover.png"/>
+                            <connections>
+                                <action selector="OnPraise:" destination="-1" eventType="touchUpInside" id="IMA-fr-QdO"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HDt-jp-nyW">
+                            <rect key="frame" x="185" y="10" width="100" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="3An-cq-2Uf"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="回复" image="talk.png">
+                                <color key="titleColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="OnReply:" destination="-1" eventType="touchUpInside" id="bwK-nI-60k"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="HDt-jp-nyW" secondAttribute="centerY" id="6oo-gi-2Lq"/>
+                        <constraint firstAttribute="centerY" secondItem="9lu-Yg-Brt" secondAttribute="centerY" id="Iuf-YE-D9h"/>
+                        <constraint firstItem="9lu-Yg-Brt" firstAttribute="height" secondItem="HDt-jp-nyW" secondAttribute="height" id="QIr-D0-fV3"/>
+                        <constraint firstItem="9lu-Yg-Brt" firstAttribute="leading" secondItem="29T-Lf-eVu" secondAttribute="leading" constant="15" id="USF-NN-eHf"/>
+                        <constraint firstAttribute="centerY" secondItem="9lu-Yg-Brt" secondAttribute="centerY" id="V1O-M7-o4k"/>
+                        <constraint firstAttribute="height" constant="50" id="ef0-6J-xY7"/>
+                        <constraint firstItem="9lu-Yg-Brt" firstAttribute="top" secondItem="29T-Lf-eVu" secondAttribute="top" constant="10" id="iv4-Os-BkX"/>
+                        <constraint firstAttribute="trailing" secondItem="HDt-jp-nyW" secondAttribute="trailing" constant="15" id="snL-GF-qUb"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="goodEffect.png" translatesAutoresizingMaskIntoConstraints="NO" id="5HG-mC-6E3">
+                    <rect key="frame" x="135" y="187" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="UOn-BR-wim" secondAttribute="trailing" id="2VE-WO-S11"/>
-                <constraint firstAttribute="bottom" secondItem="UOn-BR-wim" secondAttribute="bottom" id="9vk-1w-EKB"/>
-                <constraint firstItem="UOn-BR-wim" firstAttribute="top" secondItem="1" secondAttribute="top" id="XFC-QV-u1a"/>
-                <constraint firstItem="UOn-BR-wim" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="qQC-C9-oW1"/>
+                <constraint firstItem="29T-Lf-eVu" firstAttribute="leading" secondItem="pKl-VP-UGe" secondAttribute="leading" id="0z7-o9-OJe"/>
+                <constraint firstItem="pKl-VP-UGe" firstAttribute="centerY" secondItem="5HG-mC-6E3" secondAttribute="centerY" id="2m7-lC-0O1"/>
+                <constraint firstItem="29T-Lf-eVu" firstAttribute="width" secondItem="pKl-VP-UGe" secondAttribute="width" id="Ci8-4j-jMi"/>
+                <constraint firstAttribute="trailing" secondItem="pKl-VP-UGe" secondAttribute="trailing" constant="10" id="OKE-1o-7Ll"/>
+                <constraint firstItem="pKl-VP-UGe" firstAttribute="centerX" secondItem="5HG-mC-6E3" secondAttribute="centerX" id="Pfb-Uf-ckz"/>
+                <constraint firstItem="pKl-VP-UGe" firstAttribute="top" secondItem="1" secondAttribute="top" constant="15" id="aO7-Oh-eA6"/>
+                <constraint firstItem="29T-Lf-eVu" firstAttribute="top" secondItem="pKl-VP-UGe" secondAttribute="bottom" constant="20" id="gtM-mx-fVf"/>
+                <constraint firstItem="pKl-VP-UGe" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="yAR-XN-qLR"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="good.png" width="20" height="20"/>
+        <image name="goodEffect.png" width="50" height="50"/>
+        <image name="good_hover.png" width="20" height="20"/>
+        <image name="talk.png" width="20" height="20"/>
+    </resources>
 </document>

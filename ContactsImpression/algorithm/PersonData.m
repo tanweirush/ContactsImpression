@@ -66,7 +66,12 @@
             personPhone = [personPhone substringFromIndex:1];
         }
         
-        if (personPhone.length != 11)
+        if (personPhone.length != 11
+            || !([personPhone hasPrefix:@"13"]
+            || [personPhone hasPrefix:@"147"]
+            || [personPhone hasPrefix:@"15"]
+            || [personPhone hasPrefix:@"170"]
+            || [personPhone hasPrefix:@"18"]))
         {
             continue;
         }

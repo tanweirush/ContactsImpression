@@ -38,19 +38,21 @@
 #define POST_DEVICE @"device" //设备类型：0、iphone
 
 //通用属性json key
-#define CI_STAR @"star" //星级
 #define CI_PID @"pid" //联系人id
-#define CI_NAME @"n" //联系人名字
+#define CI_NAME @"name" //联系人名字
 #define CI_PHONES @"phone" //联系人电话
 #define CI_CONTACT @"contact" //通讯录
 #define CI_TID @"tid" //评论id
 #define CI_READ @"read" //是否已读
+#define CI_PRAISE @"praise" //是否赞过
+#define CI_P_NUM @"p_num" //已经赞了多少条
+#define CI_REPLY @"reply" //回复条数
 #define CI_TIME @"time" //时间
 #define CI_READNUM @"readnum" //每日阅读
 #define CI_EVLNUM @"evaluatenum" //每日评价
 
 //CTRL_Return
-#define Return_NeedRelogin 2 //需要重新登录
+#define Return_NeedRelogin 2 //需要重新上传
 #define Return_NetTimeOut 3 //网络超时
 
 

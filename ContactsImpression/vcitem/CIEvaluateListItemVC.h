@@ -20,12 +20,11 @@ typedef NS_ENUM(NSInteger, EvaluateListItemType)
 @property (nonatomic, retain) IBOutlet UIImageView *img_arrow;
 @property (nonatomic, retain) IBOutlet UIView *v_tip;
 @property (nonatomic, retain) IBOutlet UILabel *lb_tipname;
-@property (nonatomic, retain) IBOutlet UILabel *lb_tipstar;
-@property (nonatomic, retain) IBOutlet UILabel *lb_tiptime;
 
 
-@property (nonatomic, retain) IBOutlet UILabel *lb_name;
-@property (nonatomic, retain) IBOutlet UILabel *lb_star;
+@property (nonatomic, retain) IBOutlet UILabel *lb_p_num;
+@property (nonatomic, retain) IBOutlet UIImageView *iv_praise;
+@property (nonatomic, retain) IBOutlet UILabel *lb_reply;
 @property (nonatomic, retain) IBOutlet UILabel *lb_time;
 @property (nonatomic, retain) IBOutlet UILabel *lb_content;
 

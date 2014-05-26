@@ -47,14 +47,11 @@ extern NSInteger s_maxReadNum;
     UIBarButtonItem *leftBar = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = leftBar;
     
-    CITitleV *title = [[CITitleV alloc] initWithTitle:@"验证手机号码"];
+    CITitleV *title = [[CITitleV alloc] initWithTitle:@"填个手机号码"];
     [self.navigationItem setTitleView:title];
     
     [self.tf_phone setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)]];
     [self.tf_phone setLeftViewMode:UITextFieldViewModeAlways];
-    
-    [self.tf_vcode setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)]];
-    [self.tf_vcode setLeftViewMode:UITextFieldViewModeAlways];
     
     img = [UIImage imageNamed:@"goto_sign.png"];
     img = [img stretchableImageWithLeftCapWidth:img.size.width/2 topCapHeight:img.size.height/2];
@@ -104,34 +101,6 @@ extern NSInteger s_maxReadNum;
                                                            SubType:@"fromBottom"];
 }
 
--(IBAction)OnSendVCode:(id)sender
-{
-    if (self.tf_phone.text.length < 11)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"您要输入11位手机号码哦！"
-                                                    delegate:self
-                                           cancelButtonTitle:@"确定"
-                                           otherButtonTitles:nil];
-        [av show];
-        return;
-    }
-    [self.tf_phone resignFirstResponder];
-    [self.tf_vcode resignFirstResponder];
-    [self initData];
-    [sender setEnabled:NO];
-    [self.loadding setTipText:@"发送中"];
-    [self.loadding show];
-    
-    NetServiceManager *net = [[NetServiceManager alloc] init];
-    [net setDelegate:self];
-    [net setTag:++s_tag];
-    [net GetVCode:[[NSMutableDictionary alloc] initWithObjectsAndKeys:self.tf_phone.text, POST_USERNAME, nil]];
-    [self.nets addObject:net];
-    
-    [self performSelector:@selector(EnableSendVcode) withObject:nil afterDelay:20.0f];
-}
-
 -(IBAction)OnLogin:(id)sender
 {
     if (self.tf_phone.text.length < 11)
@@ -144,19 +113,8 @@ extern NSInteger s_maxReadNum;
         [av show];
         return;
     }
-    else if (self.tf_vcode.text.length < 4)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"您要输入4位验证码哦！"
-                                                    delegate:self
-                                           cancelButtonTitle:@"确定"
-                                           otherButtonTitles:nil];
-        [av show];
-        return;
-    }
     
     [self.tf_phone resignFirstResponder];
-    [self.tf_vcode resignFirstResponder];
     [self initData];
     [self.loadding setTipText:@"验证中"];
     [self.loadding show];
@@ -165,7 +123,7 @@ extern NSInteger s_maxReadNum;
     [net setDelegate:self];
     [net setTag:++s_tag];
     [net LoginWithUserName:self.tf_phone.text
-                  Password:self.tf_vcode.text];
+                  Password:@"0571"];
     [self.nets addObject:net];
 }
 
@@ -175,10 +133,6 @@ extern NSInteger s_maxReadNum;
                                                           withString:string];
     
     if (textField.tag == self.tf_phone.tag && s.length > 11)
-    {
-        return FALSE;
-    }
-    else if (textField.tag == self.tf_vcode.tag && s.length > 4)
     {
         return FALSE;
     }
@@ -212,14 +166,6 @@ extern NSInteger s_maxReadNum;
     [self.loadding hideAfterDelay:1.5];
 }
 
--(void)VCodeData:(id)data Tag:(NSInteger)tag
-{
-    NSLog(@"VCodeData :\n%@", data);
-    [self.nets RemoveObjectWithTag:tag];
-    [self.loadding setTipText:@"注意查收短信哦"];
-    [self.loadding hideAfterDelay:1.5];
-}
-
 -(void)LoginData:(id)data Tag:(NSInteger)tag
 {
     NSLog(@"LoginData :\n%@", data);
@@ -241,21 +187,22 @@ extern NSInteger s_maxReadNum;
 -(void)UserInfoData:(id)data Tag:(NSInteger)tag
 {
     [self.nets RemoveObjectWithTag:tag];
-    [self.loadding setTipText:@"验证成功啦"];
+    [self.loadding setTipText:@"尽情玩耍吧"];
     [self.loadding hideAfterDelay:1.5];
     
     s_maxReadNum = [[data objectForKey:CI_READNUM] integerValue];
     s_maxEvaluateNum = [[data objectForKey:CI_EVLNUM] integerValue];
     
     //归零今日阅读/评论数
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
-    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
+//    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
+//    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
+//    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
     
     if ([self.delegate respondsToSelector:@selector(LoginResult:)])
     {
         [self.delegate LoginResult:YES];
     }
-    [self OnBack:nil];
+    [self.navigationController popViewControllerWithTransitionType:@"push"
+                                                           SubType:@"fromBottom"];
 }
 @end

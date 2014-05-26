@@ -134,7 +134,7 @@ static int s_tag = 0;
 
 -(void)OnEdit:(id)sender
 {
-    CISetEvaluateVC *vc = [[CISetEvaluateVC alloc] initWithData:self.personData];
+    CISetEvaluateVC *vc = [[CISetEvaluateVC alloc] initWithData:self.personData Type:CISetEvaluateType_Timeline];
     [vc setDelegate:self];
 //    [self.navigationController pushViewController:vc
 //                                   TransitionType:@"push" SubType:@"fromRight"];

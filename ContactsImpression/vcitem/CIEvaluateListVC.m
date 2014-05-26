@@ -142,8 +142,8 @@ extern NSInteger s_maxReadNum;
     CIEvaluateListItemVC *vc = [[CIEvaluateListItemVC alloc] initWithData:dic
                                                                      Type:self.type
                                                                     Index:indexPath.row];
-    vc.view.tag = 0x8010;
     [cell.contentView addSubview:vc.view];
+    vc.view.tag = 0x8010;
     
     return cell;
 }
@@ -152,7 +152,7 @@ extern NSInteger s_maxReadNum;
 {
     if (self.vc_noEvaluate == nil)
     {
-        return 100;
+        return 140;
     }
     return 200;
 }
@@ -185,7 +185,7 @@ extern NSInteger s_maxReadNum;
         }
         return [NSString stringWithFormat:@"评价好友\n可查看更多"];
     }
-    return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", c];
+    return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", (long)c];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -243,7 +243,7 @@ extern NSInteger s_maxReadNum;
 {
     static CGFloat last_y = 0.0;
     static int downORup = 0;
-    if (scrollView.contentOffset.y > last_y)
+    if (scrollView.contentOffset.y > last_y + 30)
     {//向上
         last_y = scrollView.contentOffset.y;
         if (downORup != 1)
@@ -255,7 +255,7 @@ extern NSInteger s_maxReadNum;
             }
         }
     }
-    else if (scrollView.contentOffset.y < last_y - 10)
+    else if (scrollView.contentOffset.y < last_y - 60)
     {//向下50
         last_y = scrollView.contentOffset.y;
         if (downORup != 2)
@@ -274,13 +274,12 @@ extern NSInteger s_maxReadNum;
     [self DataLoadOver];
     self.datas = arr;
     [self.tbv reloadData];
+    self.tbv.pullLastRefreshDate = [NSDate date];
 }
 
 #pragma mark - PullTableViewDelegate
 -(void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView
 {
-    self.tbv.pullLastRefreshDate = [NSDate date];
-    
     if ([self.delegate respondsToSelector:@selector(RefreshEvaluateList:)])
     {
         [self.delegate RefreshEvaluateList:self];

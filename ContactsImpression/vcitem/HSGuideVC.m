@@ -29,12 +29,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.s
     CGSize size = [[UIScreen mainScreen] bounds].size;
-    int count = 2;
+    int count = 5;
     [self.sv_root setContentSize:CGSizeMake(count * size.width, size.height)];
     
     for (int i = 0; i < count; ++i)
     {
-        NSString *file = [NSString stringWithFormat:@"page_%d_%d.png", i, (int)size.height];
+        NSString *file = [NSString stringWithFormat:@"page_%d.png", i];
         UIImage *img = [UIImage imageNamed:file];
         if (!img) {
             [self.view setHidden:YES];
@@ -42,7 +42,7 @@
         }
         CGRect rt = CGRectMake(i * size.width, 0,
                                size.width,
-                               size.height);
+                               img.size.height);
         UIImageView *iv = [[UIImageView alloc] initWithFrame:rt];
         [iv setImage:img];
         

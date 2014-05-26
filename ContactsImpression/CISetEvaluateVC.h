@@ -16,12 +16,18 @@
 
 @end
 
+typedef NS_ENUM(NSUInteger, CISetEvaluateType) {
+    CISetEvaluateType_Timeline,
+    CISetEvaluateType_Reply,
+};
+
 @interface CISetEvaluateVC : UIViewController<UITextViewDelegate,
 NetFinishedDelegate,
 UIAlertViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UITextView *tv_evaluate;
+@property (nonatomic, retain) IBOutlet UILabel *lb_tip;
 @property (nonatomic, retain) id<CISetEvaluateVCDelegate> delegate;
 
-- (id)initWithData:(id)data;
+- (id)initWithData:(id)data Type:(CISetEvaluateType)type;
 @end

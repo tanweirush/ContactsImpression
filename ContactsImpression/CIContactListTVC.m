@@ -208,7 +208,7 @@
     
     PersonData *addressBook = (PersonData *)[[self.listContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    CISetEvaluateVC *vc = [[CISetEvaluateVC alloc] initWithData:addressBook];
+    CISetEvaluateVC *vc = [[CISetEvaluateVC alloc] initWithData:addressBook Type:CISetEvaluateType_Timeline];
 //    [self.navigationController pushViewController:vc
 //                                   TransitionType:@"push" SubType:@"fromRight"];
     

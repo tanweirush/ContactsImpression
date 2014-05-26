@@ -150,14 +150,28 @@ extern NSInteger s_maxReadNum;
     [self.nets RemoveObjectWithTag:tag];
     
     [self LogoutResetDataWithData:data];
-    if ([self.delegate respondsToSelector:@selector(CIMoreVC:Logout:)])
-    {
-        [self.delegate CIMoreVC:self Logout:YES];
-    }
+    
+    //获取用户阅读条数
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setTag:++s_tag];
+    [net setDelegate:self];
+    [net GetUserInfo:[[NSMutableDictionary alloc] init]];
+    [self.nets addObject:net];
+}
+
+-(void)UserInfoData:(id)data Tag:(NSInteger)tag
+{
     [self.loadding hide];
     [self.loadding.view removeFromSuperview];
     self.loadding = nil;
     
+    s_maxReadNum = [[data objectForKey:CI_READNUM] integerValue];
+    s_maxEvaluateNum = [[data objectForKey:CI_EVLNUM] integerValue];
+    
+    if ([self.delegate respondsToSelector:@selector(CIMoreVC:Logout:)])
+    {
+        [self.delegate CIMoreVC:self Logout:YES];
+    }
     [self OnMore:nil];
 }
 
@@ -196,10 +210,7 @@ extern NSInteger s_maxReadNum;
         }
     }
     [UserDef setUserDefValue:@"" keyName:USER_NAME];
-    //归零今日阅读/评论数
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
-    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
+    
     s_maxReadNum = 0;
     s_maxEvaluateNum = 0;
 }

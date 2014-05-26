@@ -31,7 +31,7 @@ NSInteger s_maxEvaluateNum = 0;
 @property (nonatomic, retain) CIEvaluateListVC *vc_myevaluate;
 @property (nonatomic, retain) NSMutableArray *trend_datas;
 @property (nonatomic, assign) NSInteger i_trendPage;
-@property (nonatomic, assign) BOOL bCanLoad;
+@property (nonatomic, assign) BOOL bContactLoadOver;
 @property (nonatomic, retain) HSLoaddingVC *loadding;
 @property (nonatomic, retain) CIMoreVC *vc_more;
 
@@ -42,9 +42,6 @@ NSInteger s_maxEvaluateNum = 0;
 @property (nonatomic, assign) int iNeedHideLoad;
 @property (nonatomic, assign) BOOL bIsLogoutBack;
 @property (nonatomic, assign) BOOL bIsLoginBack;
-
-
-@property (nonatomic, assign) BOOL bIsShowRelogin;;
 
 @end
 
@@ -67,7 +64,8 @@ NSInteger s_maxEvaluateNum = 0;
         // Custom initialization
         self.nets = [[NSMutableArray alloc] init];
         self.timeline_datas = [[NSMutableArray alloc] init];
-        self.bCanLoad = NO;
+        self.trend_datas = [[NSMutableArray alloc] init];
+        self.bContactLoadOver = NO;
         self.iNeedHideLoad = 0;
         self.bIsLogoutBack = NO;
         self.bIsLoginBack = NO;
@@ -94,29 +92,34 @@ NSInteger s_maxEvaluateNum = 0;
     self.vc_timeline = [[CIEvaluateListVC alloc] initWithFrame:frame Type:EvaluateListItemType_Timeline];
     [self.vc_timeline setDelegate:self];
     [self.view insertSubview:self.vc_timeline.view belowSubview:self.v_tip];
+    [self.vc_timeline.view setHidden:YES];
     
     self.vc_myevaluate = [[CIEvaluateListVC alloc] initWithFrame:frame Type:EvaluateListItemType_Self];
     [self.vc_myevaluate setDelegate:self];
     [self.view insertSubview:self.vc_myevaluate.view belowSubview:self.v_tip];
-    [self.vc_myevaluate.view setHidden:YES];
+    [self.vc_myevaluate.view setHidden:NO];
     
+    /**
+     *  出现titel提示
+     */
+//    NSString *phone = [UserDef getUserDefValue:USER_NAME];
+//    if (phone != nil && phone.length > 0)
+//    {
+//        [self.v_tip setHidden:YES];
+//    }
+//    else
+//    {
+//        [self.vc_timeline.tbv setContentInset:UIEdgeInsetsMake(20, 0, 0, 0)];
+//        [self.vc_timeline.tbv setContentOffset:CGPointMake(0, 20)];
+//        [self performSelector:@selector(hideTopTipWithTime) withObject:nil afterDelay:3];
+//    }
     
-    NSString *phone = [UserDef getUserDefValue:USER_NAME];
-    if (phone != nil && phone.length > 0)
-    {
-        [self.v_tip setHidden:YES];
-    }
-    else
-    {
-        [self.vc_timeline.tbv setContentInset:UIEdgeInsetsMake(20, 0, 0, 0)];
-        [self.vc_timeline.tbv setContentOffset:CGPointMake(0, 20)];
-        [self.v_tip setHidden:NO];
-        [self performSelector:@selector(hideTopTipWithTime) withObject:nil afterDelay:3];
-    }
-    [self.btn_other setSelected:YES];
+    [self.btn_self setSelected:YES];
+    
     [self.btn_other setImage:[UIImage imageNamed:@"others_news_hover.png"] forState:UIControlStateHighlighted|UIControlStateSelected];
     [self.btn_self setImage:[UIImage imageNamed:@"my_news_hover.png"] forState:UIControlStateHighlighted|UIControlStateSelected];
     self.i_timelinePage = 0;
+    self.i_trendPage = 0;
     
     self.loadding = [[HSLoaddingVC alloc] initWithView:self.view
                                                   Type:LOADDING_DEF];
@@ -127,22 +130,26 @@ NSInteger s_maxEvaluateNum = 0;
 -(void)viewWillAppear:(BOOL)animated
 {
     if (self.bIsLogoutBack)
-    {
+    {//退出后返回
         self.bIsLogoutBack = NO;
         
-        [self.btn_other setSelected:YES];
-        [self.btn_self setSelected:NO];
-        [self.vc_timeline.view setHidden:NO];
-        [self.vc_myevaluate.view setHidden:YES];
-        
+        self.i_timelinePage = 0;
+        self.i_trendPage = 0;
         [self.timeline_datas removeAllObjects];
         [self.trend_datas removeAllObjects];
-        self.trend_datas = nil;
         
-        CITitleV *v = [[CITitleV alloc] initWithTitle:@"老友说(未验证)"];
-        [self.navigationItem setTitleView:v];
-        [self.vc_timeline DataLoadStart];
-        [self.vc_myevaluate ReloadTableViewWithData:[[NSMutableArray alloc] init]];
+        [self OnFriend:nil];
+    }
+    else if (self.bIsLoginBack)
+    {//登录后返回
+        self.bIsLoginBack = NO;
+        
+        self.i_timelinePage = 0;
+        self.i_trendPage = 0;
+        [self.timeline_datas removeAllObjects];
+        [self.trend_datas removeAllObjects];
+        
+        [self OnMy:nil];
     }
     else if ([self.btn_other isSelected])
     {
@@ -158,29 +165,28 @@ NSInteger s_maxEvaluateNum = 0;
         }
         [self.navigationItem setTitleView:v];
         
-        if (self.bCanLoad && [self.timeline_datas count] == 0)
+        if (self.bContactLoadOver && [self.timeline_datas count] == 0)
         {
             [self.vc_timeline DataLoadStart];
         }
     }
-    else if (self.bCanLoad && [self.btn_self isSelected] && [self.trend_datas count] == 0)
+    else if ([self.btn_self isSelected])
     {
-        [self.vc_myevaluate DataLoadStart];
-    }
-    
-    if (self.bIsLoginBack)
-    {
-        self.bIsLoginBack = NO;
-        ++self.iNeedHideLoad;
-        [self.loadding setTipText:@"联系好友中"];
-        [self.loadding show];
-        //获取用户阅读条数
-        NetServiceManager *net = [[NetServiceManager alloc] init];
-        self.iUserInfoTag = ++s_tag;
-        [net setTag:self.iUserInfoTag];
-        [net setDelegate:self];
-        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
-        [self.nets addObject:net];
+        CITitleV *v = [[CITitleV alloc] initWithTitle:@"⽼友对我说"];
+        [self.navigationItem setTitleView:v];
+        
+        if (self.bContactLoadOver && [self.trend_datas count] == 0)
+        {
+            NSString *phone = [UserDef getUserDefValue:USER_NAME];
+            if (phone == nil || phone.length == 0)
+            {
+                [self OnFriend:nil];
+            }
+            else
+            {
+                [self.vc_myevaluate DataLoadStart];
+            }
+        }
     }
 }
 
@@ -210,6 +216,20 @@ NSInteger s_maxEvaluateNum = 0;
 
 -(void)startGetListData
 {
+    if (s_maxReadNum == 0)
+    {
+        ++self.iNeedHideLoad;
+        [self.loadding setTipText:@"联系好友中"];
+        [self.loadding show];
+        
+        //获取用户阅读条数
+        NetServiceManager *net = [[NetServiceManager alloc] init];
+        self.iUserInfoTag = ++s_tag;
+        [net setTag:self.iUserInfoTag];
+        [net setDelegate:self];
+        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
+        [self.nets addObject:net];
+    }
     [self HideLoadView];
     
     UIImage *img = [UIImage imageNamed:@"friends.png"];
@@ -220,13 +240,28 @@ NSInteger s_maxEvaluateNum = 0;
     UIBarButtonItem *rightBar = [[UIBarButtonItem alloc] initWithCustomView:contact];
     self.navigationItem.rightBarButtonItem = rightBar;
     
-    self.bCanLoad = YES;
+    self.bContactLoadOver = YES;
     if ([self.btn_self isSelected])
     {
-        [self.vc_myevaluate DataLoadStart];
+        NSString *phone = [UserDef getUserDefValue:USER_NAME];
+        if (phone == nil || phone.length == 0)
+        {//如果未登录，则直接去登录
+            CILoginVC *vc = [[CILoginVC alloc] init];
+            [vc setDelegate:self];
+            [self.navigationController pushViewController:vc
+                                           TransitionType:@"push"
+                                                  SubType:@"fromTop"];
+            self.loginVC = vc;
+        }
+        else
+        {
+            [self getTrendData];
+            [self.vc_myevaluate DataLoadStart];
+        }
     }
     else if ([self.btn_other isSelected])
     {
+        [self getTimeLineData];
         [self.vc_timeline DataLoadStart];
     }
 }
@@ -253,21 +288,6 @@ NSInteger s_maxEvaluateNum = 0;
         [self.contactData setDelegate:self];
     }
     [self.contactData UpdateData];
-    
-    if (s_maxReadNum == 0)
-    {
-        ++self.iNeedHideLoad;
-        [self.loadding setTipText:@"联系好友中"];
-        [self.loadding show];
-        
-        //获取用户阅读条数
-        NetServiceManager *net = [[NetServiceManager alloc] init];
-        self.iUserInfoTag = ++s_tag;
-        [net setTag:self.iUserInfoTag];
-        [net setDelegate:self];
-        [net GetUserInfo:[[NSMutableDictionary alloc] init]];
-        [self.nets addObject:net];
-    }
 }
 
 -(void)OnMore:(id)sender
@@ -296,7 +316,7 @@ NSInteger s_maxEvaluateNum = 0;
     if (phone == nil || phone.length == 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:@"请先验证手机号，验证手机号后就可以看到您的朋友们对您的评论啦！"
+                                                     message:@"填写您的手机号，您就可以方便的看到您的朋友们对您的评论啦！"
                                                     delegate:self
                                            cancelButtonTitle:@"取消"
                                            otherButtonTitles:@"确定", nil];
@@ -312,10 +332,8 @@ NSInteger s_maxEvaluateNum = 0;
         [self.vc_timeline.view setHidden:YES];
         [self.vc_myevaluate.view setHidden:NO];
         
-        if (self.trend_datas == nil)
+        if ([self.trend_datas count] == 0)
         {
-            self.trend_datas = [[NSMutableArray alloc] init];
-            [self getTrendData];
             [self.vc_myevaluate DataLoadStart];
         }
     }
@@ -338,6 +356,11 @@ NSInteger s_maxEvaluateNum = 0;
     [self.btn_other setSelected:YES];
     [self.vc_myevaluate.view setHidden:YES];
     [self.vc_timeline.view setHidden:NO];
+    
+    if ([self.timeline_datas count] == 0)
+    {
+        [self.vc_timeline DataLoadStart];
+    }
 }
 
 -(void)hideTopTipWithTime
@@ -418,7 +441,7 @@ NSInteger s_maxEvaluateNum = 0;
 -(void)ScrollUp:(CIEvaluateListVC *)evaluateListVC
 {
     [UIView transitionWithView:self.view
-                      duration:0.111
+                      duration:0.333
                        options:UIViewAnimationOptionAllowAnimatedContent
                     animations:^{
                         [self.btn_self setAlpha:0.0];
@@ -431,7 +454,7 @@ NSInteger s_maxEvaluateNum = 0;
 -(void)ScrollDown:(CIEvaluateListVC *)evaluateListVC
 {
     [UIView transitionWithView:self.view
-                      duration:0.111
+                      duration:0.333
                        options:UIViewAnimationOptionAllowAnimatedContent
                     animations:^{
                         [self.btn_self setAlpha:1.0];
@@ -443,18 +466,12 @@ NSInteger s_maxEvaluateNum = 0;
 
 -(void)CIMoreVC:(CIMoreVC *)vc Logout:(BOOL)bLogout
 {
-    if (bLogout)
-    {
-        self.bIsLogoutBack = YES;
-    }
+    self.bIsLogoutBack = bLogout;
 }
 
 -(void)CIMoreVC:(CIMoreVC *)vc Login:(BOOL)bLogin
 {
-    if (bLogin)
-    {
-        self.bIsLoginBack = YES;
-    }
+    self.bIsLoginBack = bLogin;
 }
 
 /**
@@ -464,7 +481,6 @@ NSInteger s_maxEvaluateNum = 0;
 {
     if (alertView.tag == 1)
     {
-        self.bIsShowRelogin = NO;
         if (buttonIndex == 1)
         {
             CILoginVC *vc = [[CILoginVC alloc] init];
@@ -499,10 +515,7 @@ NSInteger s_maxEvaluateNum = 0;
 {
     self.loginVC = nil;
     
-    if (success)
-    {
-        [self getTrendData];
-    }
+    self.bIsLoginBack = success;
 }
 
 /**
@@ -560,33 +573,29 @@ NSInteger s_maxEvaluateNum = 0;
 -(void)NoNeedUpdata:(NSInteger)tag Msg:(NSString *)m Result:(NSInteger)r
 {
     [self.nets RemoveObjectWithTag:tag];
-    [self.vc_timeline DataLoadOver];
-    [self.vc_myevaluate DataLoadOver];
     
     if (r == Return_NeedRelogin)
-    {//需要重新验证
-        if (self.bIsShowRelogin)
+    {//服务器端session和客户端对应不上，需要客户端重新上传手机号码
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
+        NSString *s = [UserDef getUserDefValue:USER_SESSION];
+        [UserDef setUserDefValue:date keyName:LASTUPDATE(s)];
+        if (nil == self.contactData)
         {
-            return;
+            self.contactData = [[CIContactData alloc] init];
+            [self.contactData setDelegate:self];
         }
-        if (m == nil || m.length == 0)
-        {
-            m = @"请重新验证手机号码";
-        }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                     message:m
-                                                    delegate:nil
-                                           cancelButtonTitle:@"取消"
-                                           otherButtonTitles:@"确定", nil];
-        [av setTag:1];
-        [av setDelegate:self];
-        [av show];
-        self.bIsShowRelogin = YES;
+        [self.contactData UpdateData];
+        
+        ++self.iNeedHideLoad;
+        [self.loadding setTipText:@"联系好友中"];
+        [self.loadding show];
+        [self.vc_timeline DataLoadOver];
+        [self.vc_myevaluate DataLoadOver];
     }
     else if (tag < 0)
     {
 #ifdef DEBUG_TAN
-        NSLog(@"上传通讯录：%@", m);
+        NSLog(@"上传通讯录失败：%@", m);
 #endif
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -600,6 +609,11 @@ NSInteger s_maxEvaluateNum = 0;
     {
         [self HideLoadView];
         s_maxEvaluateNum = s_maxReadNum = 0;
+    }
+    else
+    {
+        [self.vc_timeline DataLoadOver];
+        [self.vc_myevaluate DataLoadOver];
     }
 }
 
@@ -674,7 +688,7 @@ NSInteger s_maxEvaluateNum = 0;
     if (![self.phones writeToFile:path atomically:YES])
     {
         date = [NSDate dateWithTimeIntervalSince1970:0];
-    };
+    }
     self.phones = nil;
     
     NSString *s = [data objectForKey:CTRL_Session];
@@ -697,9 +711,9 @@ NSInteger s_maxEvaluateNum = 0;
     s_maxEvaluateNum = [[data objectForKey:CI_EVLNUM] integerValue];
     
     //归零今日阅读/评论数
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
-    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
-    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
+//    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_WATCH_Count];
+//    [UserDef setUserDefValue:[NSNumber numberWithInt:0] keyName:LAST_EVALUATE_Count];
+//    [UserDef setUserDefValue:[NSDate date] keyName:LAST_WATCH_Date];
 }
 
 @end

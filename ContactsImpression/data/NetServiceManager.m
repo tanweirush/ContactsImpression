@@ -18,7 +18,6 @@
 
 //http请求内容
 #define XU_ACTION_LOGIN @"register"
-#define XU_ACTION_GETVCODE @"vcode"
 #define XU_ACTION_UPDATECONTACT @"contacts"
 #define XU_ACTION_FEEDBACK @"feedback"
 #define XU_ACTION_TIMELINE @"timeline"
@@ -28,6 +27,9 @@
 #define XU_ACTION_SETREAD @"setread"
 #define XU_ACTION_USERINFO @"userinfo"
 #define XU_ACTION_LOGOUT @"logout"
+#define XU_ACTION_REPLYLIST @"timelinereply"
+#define XU_ACTION_SETREPLY @"setreply"
+#define XU_ACTION_SETPRAISE @"setpraise"
 
 /**
  *  网络操作列表
@@ -37,27 +39,23 @@ typedef NS_ENUM(NSInteger, NetTagType)
     /**
      *  登录
      */
-    na_login = 0,
+    na_login,
     /**
      *  获取图片
      */
-    na_img = 1,
-    /**
-     *  获取验证码
-     */
-    na_getvcode = 2,
+    na_img,
     /**
      *  更新通讯录
      */
-    na_updatecontact = 3,
+    na_updatecontact,
     /**
      *  意见反馈
      */
-    na_feedback = 4,
+    na_feedback,
     /**
      *  联系人动态
      */
-    na_timeline = 5,
+    na_timeline,
     /**
      *  个人动态
      */
@@ -82,6 +80,18 @@ typedef NS_ENUM(NSInteger, NetTagType)
      *  登出
      */
     na_logout,
+    /**
+     *  评论的回复列表
+     */
+    na_replylist,
+    /**
+     *  回复某条评论
+     */
+    na_setreply,
+    /**
+     *  赞某条评论
+     */
+    na_setpraise,
     
     
     /**
@@ -104,7 +114,6 @@ static NSDate *s_time;
 
 -(void)LoginWithUserName:(NSString *)userName Password:(NSString *)pwd
 {
-    NSString *phone_uid = [UserDef getUserDefValue:PHONE_UID];
     NSURL *url = XU_URL(XU_ACTION_LOGIN);
     
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
@@ -123,6 +132,7 @@ static NSDate *s_time;
         [dic setValue:s forKey:CTRL_Session];
     }
     
+    NSString *phone_uid = [UserDef getUserDefValue:PHONE_UID];
     if(phone_uid && phone_uid.length > 0)
     {
         [dic setValue:phone_uid forKey:POST_PhoneID];
@@ -137,20 +147,6 @@ static NSDate *s_time;
     self.request = request;
     
     NSLog(@"log : \n%@", dic);
-}
-
--(void)GetVCode:(NSMutableDictionary *)postData
-{
-    NSURL *url = XU_URL(XU_ACTION_GETVCODE);
-    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
-    [request setDelegate:self];
-    [request appendPostData:[postData JSONData]];
-    [request setRequestMethod:@"POST"];
-    [request setTag:na_getvcode];
-    [request setTimeOutSeconds:XU_NET_TIMEOUT];
-    [request setNumberOfTimesToRetryOnTimeout:0];
-    [request startAsynchronous];
-    self.request = request;
 }
 
 -(void)UpdateContacts:(NSMutableDictionary *)postData
@@ -368,6 +364,66 @@ static NSDate *s_time;
     self.request = request;
 }
 
+-(void)GetReplyList:(NSMutableDictionary *)postData
+{
+    NSString *s = [UserDef getUserDefValue:USER_SESSION];
+    if (s && s.length > 0)
+    {
+        [postData setValue:s forKey:CTRL_Session];
+    }
+    
+    NSURL *url = XU_URL(XU_ACTION_REPLYLIST);
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request appendPostData:[postData JSONData]];
+    [request setRequestMethod:@"POST"];
+    [request setTag:na_replylist];
+    [request setTimeOutSeconds:XU_NET_TIMEOUT];
+    [request setNumberOfTimesToRetryOnTimeout:0];
+    [request startAsynchronous];
+    self.request = request;
+}
+
+-(void)SetReplyForTimeline:(NSMutableDictionary *)postData
+{
+    NSString *s = [UserDef getUserDefValue:USER_SESSION];
+    if (s && s.length > 0)
+    {
+        [postData setValue:s forKey:CTRL_Session];
+    }
+    
+    NSURL *url = XU_URL(XU_ACTION_SETREPLY);
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request appendPostData:[postData JSONData]];
+    [request setRequestMethod:@"POST"];
+    [request setTag:na_setreply];
+    [request setTimeOutSeconds:XU_NET_TIMEOUT];
+    [request setNumberOfTimesToRetryOnTimeout:5];
+    [request startAsynchronous];
+    self.request = request;
+}
+
+-(void)SetPraiseForTimeline:(NSMutableDictionary *)postData
+{
+    NSString *s = [UserDef getUserDefValue:USER_SESSION];
+    if (s && s.length > 0)
+    {
+        [postData setValue:s forKey:CTRL_Session];
+    }
+    
+    NSURL *url = XU_URL(XU_ACTION_SETPRAISE);
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request appendPostData:[postData JSONData]];
+    [request setRequestMethod:@"POST"];
+    [request setTag:na_setpraise];
+    [request setTimeOutSeconds:XU_NET_TIMEOUT];
+    [request setNumberOfTimesToRetryOnTimeout:5];
+    [request startAsynchronous];
+    self.request = request;
+}
+
 -(void)GetImage:(NSString*)imgPath
 {
     NSURL *url = XU_IMGURL(imgPath);
@@ -468,11 +524,6 @@ static NSDate *s_time;
             [self.delegate LoginData:dic Tag:self.tag];
         }
             break;
-        case na_getvcode:
-        {
-            [self.delegate VCodeData:dic Tag:self.tag];
-        }
-            break;
         case na_updatecontact:
         {
             [self.delegate UpdateContactsData:dic Tag:self.tag];
@@ -516,6 +567,21 @@ static NSDate *s_time;
         case na_logout:
         {
             [self.delegate LogoutData:dic Tag:self.tag];
+        }
+            break;
+        case na_replylist:
+        {
+            [self.delegate ReplyListData:dic Tag:self.tag];
+        }
+            break;
+        case na_setreply:
+        {
+            [self.delegate ReplyTimeLineData:dic Tag:self.tag];
+        }
+            break;
+        case na_setpraise:
+        {
+            [self.delegate SetPraiseData:dic Tag:self.tag];
         }
             break;
         case na_img:

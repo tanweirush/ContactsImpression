@@ -19,7 +19,6 @@
 NetFinishedDelegate>
 
 @property (nonatomic, strong) IBOutlet UITextField *tf_phone;
-@property (nonatomic, strong) IBOutlet UITextField *tf_vcode;
 @property (nonatomic, strong) IBOutlet UIButton *btn_login;
 @property (nonatomic, retain) id<CILoginVCDelegate> delegate;
 
