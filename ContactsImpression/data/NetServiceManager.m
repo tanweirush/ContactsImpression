@@ -30,6 +30,7 @@
 #define XU_ACTION_REPLYLIST @"timelinereply"
 #define XU_ACTION_SETREPLY @"setreply"
 #define XU_ACTION_SETPRAISE @"setpraise"
+#define XU_ACTION_TIMELINEONE @"timelineone"
 
 /**
  *  网络操作列表
@@ -92,6 +93,10 @@ typedef NS_ENUM(NSInteger, NetTagType)
      *  赞某条评论
      */
     na_setpraise,
+    /**
+     *  获取某条评论详情
+     */
+    na_timelineone,
     
     
     /**
@@ -424,6 +429,26 @@ static NSDate *s_time;
     self.request = request;
 }
 
+-(void)GetTimelineOne:(NSMutableDictionary *)postData
+{
+    NSString *s = [UserDef getUserDefValue:USER_SESSION];
+    if (s && s.length > 0)
+    {
+        [postData setValue:s forKey:CTRL_Session];
+    }
+    
+    NSURL *url = XU_URL(XU_ACTION_TIMELINEONE);
+    ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request appendPostData:[postData JSONData]];
+    [request setRequestMethod:@"POST"];
+    [request setTag:na_timelineone];
+    [request setTimeOutSeconds:XU_NET_TIMEOUT];
+    [request setNumberOfTimesToRetryOnTimeout:0];
+    [request startAsynchronous];
+    self.request = request;
+}
+
 -(void)GetImage:(NSString*)imgPath
 {
     NSURL *url = XU_IMGURL(imgPath);
@@ -582,6 +607,11 @@ static NSDate *s_time;
         case na_setpraise:
         {
             [self.delegate SetPraiseData:dic Tag:self.tag];
+        }
+            break;
+        case na_timelineone:
+        {
+            [self.delegate TimeLineOneData:dic Tag:self.tag];
         }
             break;
         case na_img:

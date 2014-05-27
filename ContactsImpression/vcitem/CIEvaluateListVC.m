@@ -47,8 +47,6 @@ extern NSInteger s_maxReadNum;
     self.tbv.pullArrowImage = [UIImage imageNamed:@"whiteArrow.png"];
     self.tbv.pullBackgroundColor = UIColorFromARGB(0xff036122);
     self.tbv.pullTextColor = UIColorFromARGB(0xffffffff);
-    
-    
     [self.view setFrame:self.frame];
 }
 

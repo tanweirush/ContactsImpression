@@ -10,7 +10,6 @@
 #import "PushViewController+UINavigationController.h"
 #import "CITitleV.h"
 #import "CIContactData.h"
-#import "CIReplyEvaluateListVC.h"
 
 @interface CIReadEvaluateVC ()
 
@@ -19,6 +18,7 @@
 @property (nonatomic, retain) NetServiceManager *net;
 @property (nonatomic, retain) CIReplyEvaluateListVC *vc_reply;
 @property (nonatomic, retain) CISetEvaluateVC *vc_evaluate;
+@property (nonatomic, assign) BOOL bNeedRefreshTid;
 
 @end
 
@@ -33,6 +33,7 @@
         // Custom initialization
         self.data = data;
         self.type = type;
+        self.bNeedRefreshTid = NO;
     }
     return self;
 }
@@ -71,22 +72,12 @@
     
     [self.lb_content setText:[self.data objectForKey:CI_CONTENT]];
     
+    [self.btn_praise setImage:[UIImage imageNamed:@"good_hover.png"]
+                     forState:UIControlStateDisabled|UIControlStateSelected];
+    
     self.vc_reply = [[CIReplyEvaluateListVC alloc] initWithData:self.data];
     [self.view addSubview:self.vc_reply.view];
-    
-//    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-//    [dic setValue:[self.data objectForKey:CI_TID] forKey:CI_TID];
-//    [dic setValue:[NSNumber numberWithInteger:0] forKey:CTRL_PAGE];
-//    self.net = [[NetServiceManager alloc] init];
-//    [self.net setDelegate:self];
-//    [self.net GetReplyList:dic];
-    
-//    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-//    [dic setValue:[self.data objectForKey:CI_TID] forKey:CI_TID];
-//    [dic setValue:@"呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵" forKey:CI_CONTENT];
-//    self.net = [[NetServiceManager alloc] init];
-//    [self.net setDelegate:self];
-//    [self.net SetReplyForTimeline:dic];
+    [self.vc_reply.view setAlpha:0.0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,14 +100,26 @@
 {
     CGRect rect = [[UIScreen mainScreen] bounds];
     rect.origin.y = self.v_tool.frame.origin.y + self.v_tool.frame.size.height + 10;
-    rect.size.height -= rect.origin.y + 64 + 10;
+    rect.size.height -= rect.origin.y + 64;
     [self.vc_reply.view setFrame:rect];
+    
+    [UIView transitionWithView:self.view
+                      duration:0.111
+                       options:UIViewAnimationOptionAllowAnimatedContent
+                    animations:^{
+                        [self.vc_reply.view setAlpha:1.0];
+                    } completion:^(BOOL finished) {
+                    }];
 }
 
 -(void)OnBack:(id)sender
 {
-//    [self.navigationController popViewControllerWithTransitionType:@"push"
-//                                                           SubType:@"fromLeft"];
+    if (self.bNeedRefreshTid)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_TID_refresh"
+                                                            object:nil
+                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[self.data objectForKey:CI_TID], CI_TID, nil]];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -133,6 +136,7 @@
         [self.net SetPraiseForTimeline:dic];
     }
     
+    [self.btn_praise setEnabled:NO];
     /**
      *  赞图标闪现
      */
@@ -140,18 +144,25 @@
                       duration:0.111
                        options:UIViewAnimationOptionLayoutSubviews
                     animations:^{
-                        [self.iv_praise setAlpha:0.666];
+                        [self.iv_praise setAlpha:1.0];
                     }
                     completion:^(BOOL finished) {
-                        [UIView transitionWithView:self.iv_praise
-                                          duration:0.222
-                                           options:UIViewAnimationOptionLayoutSubviews
-                                        animations:^{
-                                            [self.iv_praise setAlpha:0.0];
-                                        }
-                                        completion:^(BOOL finished) {
-                                            
-                                        }];
+                        [self performSelector:@selector(HidePraiseAnimation)
+                                   withObject:nil
+                                   afterDelay:0.333];
+                    }];
+}
+
+-(void)HidePraiseAnimation
+{
+    [UIView transitionWithView:self.iv_praise
+                      duration:0.111
+                       options:UIViewAnimationOptionLayoutSubviews
+                    animations:^{
+                        [self.iv_praise setAlpha:0.0];
+                    }
+                    completion:^(BOOL finished) {
+                        [self.btn_praise setEnabled:YES];
                     }];
 }
 
@@ -172,10 +183,12 @@
 -(void)SetPraiseData:(id)data Tag:(NSInteger)tag
 {
     self.net = nil;
+    self.bNeedRefreshTid = YES;
 }
 
 -(void)SetEvaluate:(CISetEvaluateVC *)vc Data:(id)data
 {
     [self.vc_reply addReply:data];
+    self.bNeedRefreshTid = YES;
 }
 @end

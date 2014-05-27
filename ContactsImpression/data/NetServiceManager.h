@@ -39,6 +39,7 @@
 -(void)ReplyListData:(id)data Tag:(NSInteger)tag;
 -(void)ReplyTimeLineData:(id)data Tag:(NSInteger)tag;
 -(void)SetPraiseData:(id)data Tag:(NSInteger)tag;
+-(void)TimeLineOneData:(id)data Tag:(NSInteger)tag;
 -(void)ImageData:(id)data Tag:(NSInteger)tag;
 -(void)CheckUpData:(BOOL)NeedUpdata Tag:(NSInteger)tag;
 
@@ -65,6 +66,7 @@
 -(void)GetReplyList:(NSMutableDictionary*)postData;
 -(void)SetReplyForTimeline:(NSMutableDictionary*)postData;
 -(void)SetPraiseForTimeline:(NSMutableDictionary*)postData;
+-(void)GetTimelineOne:(NSMutableDictionary*)postData;
 -(void)GetImage:(NSString*)imgPath;
 -(void)CheckUpData;
 

@@ -9,11 +9,23 @@
 #import <UIKit/UIKit.h>
 #import "NetServiceManager.h"
 
+@class CIReplyEvaluateListVC;
+@protocol CIReplyEvaluateListVCDelegate <NSObject>
+
+@optional
+-(void)ScrollDown:(CIReplyEvaluateListVC*)evaluateListVC;
+-(void)ScrollUp:(CIReplyEvaluateListVC*)evaluateListVC;
+
+@end
+
+
 @interface CIReplyEvaluateListVC : UIViewController<UITableViewDataSource,
 UITableViewDelegate,
-NetFinishedDelegate>
+NetFinishedDelegate,
+UIScrollViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UITableView *tbv;
+@property (nonatomic, retain) id<CIReplyEvaluateListVCDelegate> delegate;
 
 - (id)initWithData:(NSDictionary*)data;
 - (void)addReply:(NSString*)newReply;

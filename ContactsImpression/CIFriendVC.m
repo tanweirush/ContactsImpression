@@ -83,6 +83,12 @@ static int s_tag = 0;
     
     self.iPage = 0;
     [self getEvaluateData];
+    
+    //刷新某一条
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTidData:)
+                                                 name:@"Notification_TID_refresh"
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,16 +126,16 @@ static int s_tag = 0;
 
 -(void)OnBack:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     for (NetServiceManager *net in self.nets) {
         [net CancelRequest];
     }
     [self.nets removeAllObjects];
     [self.datas removeAllObjects];
-    self.personData = nil;
-    self.vc_evaluate = nil;
-    self.vc_setEvaluate = nil;
     [self.navigationController popViewControllerAnimated:YES];
-//    [self.navigationController popViewControllerWithTransitionType:@"push" SubType:@"fromLeft"];
+    self.personData = nil;
+    self.vc_setEvaluate = nil;
 }
 
 -(void)OnEdit:(id)sender
@@ -174,6 +180,16 @@ static int s_tag = 0;
     [self getEvaluateData];
 }
 
+- (void)refreshTidData: (NSNotification*) aNotification
+{
+    NSString *tid = [aNotification.userInfo objectForKey:CI_TID];
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setDelegate:self];
+    [net setTag:++s_tag];
+    [net GetTimelineOne:[[NSMutableDictionary alloc] initWithObjectsAndKeys:tid, CI_TID, nil]];
+    [self.nets addObject:net];
+}
+
 -(void)ReadEvaluate:(CIEvaluateListVC *)evaluateListVC EvaluateData:(id)data
 {
     NetServiceManager *net = [[NetServiceManager alloc] init];
@@ -206,6 +222,26 @@ static int s_tag = 0;
             [self.datas addObjectsFromArray:arr];
             ++self.iPage;
             [self.vc_evaluate ReloadTableViewWithData:self.datas];
+        }
+    }
+}
+
+-(void)TimeLineOneData:(id)data Tag:(NSInteger)tag
+{
+    NSString *tid = [data objectForKey:CI_TID];
+    if (tid == nil || tid.length == 0) {
+        return;
+    }
+    /**
+     *  替换所有相关的tid
+     */
+    for (int i = 0; i < self.datas.count; ++i)
+    {
+        if ([tid isEqualToString:[[self.datas objectAtIndex:i] objectForKey:CI_TID]])
+        {
+            [self.datas replaceObjectAtIndex:i withObject:data];
+            [self.vc_evaluate ReloadTableViewWithData:self.datas];
+            break;
         }
     }
 }

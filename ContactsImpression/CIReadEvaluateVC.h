@@ -10,9 +10,12 @@
 #import "CIEvaluateListItemVC.h"
 #import "NetServiceManager.h"
 #import "CISetEvaluateVC.h"
+#import "CIReplyEvaluateListVC.h"
+
 
 @interface CIReadEvaluateVC : UIViewController<NetFinishedDelegate,
-CISetEvaluateVCDelegate>
+CISetEvaluateVCDelegate,
+CIReplyEvaluateListVCDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *lb_content;
 @property (nonatomic, strong) IBOutlet UIView *v_tool;

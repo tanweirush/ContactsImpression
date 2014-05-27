@@ -287,7 +287,12 @@ extern int s_maxEvaluateNum;
     self.net = nil;
     if (m && m.length > 0)
     {
-        [self.loadding setTipText:@"网络抽疯啦"];
+        [self.loadding setTipText:m];
+        [self.loadding hideAfterDelay:1.5];
+    }
+    else
+    {
+        [self.loadding setTipText:@"没飞起来，您重试一下吧"];
         [self.loadding hideAfterDelay:1.5];
     }
 }

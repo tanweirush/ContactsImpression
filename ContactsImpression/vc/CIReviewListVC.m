@@ -125,6 +125,12 @@ NSInteger s_maxEvaluateNum = 0;
                                                   Type:LOADDING_DEF];
     [self.view addSubview:self.loadding.view];
     [self.loadding hide];
+    
+    //刷新某一条
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTidData:)
+                                                 name:@"Notification_TID_refresh"
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -214,6 +220,16 @@ NSInteger s_maxEvaluateNum = 0;
     [self.nets addObject:net];
 }
 
+- (void)refreshTidData: (NSNotification*) aNotification
+{
+    NSString *tid = [aNotification.userInfo objectForKey:CI_TID];
+    NetServiceManager *net = [[NetServiceManager alloc] init];
+    [net setDelegate:self];
+    [net setTag:++s_tag];
+    [net GetTimelineOne:[[NSMutableDictionary alloc] initWithObjectsAndKeys:tid, CI_TID, nil]];
+    [self.nets addObject:net];
+}
+
 -(void)startGetListData
 {
     if (s_maxReadNum == 0)
@@ -253,15 +269,13 @@ NSInteger s_maxEvaluateNum = 0;
                                                   SubType:@"fromTop"];
             self.loginVC = vc;
         }
-        else
+        else if(self.trend_datas && self.trend_datas.count == 0)
         {
-            [self getTrendData];
             [self.vc_myevaluate DataLoadStart];
         }
     }
-    else if ([self.btn_other isSelected])
+    else if ([self.btn_other isSelected] && self.timeline_datas && self.timeline_datas.count == 0)
     {
-        [self getTimeLineData];
         [self.vc_timeline DataLoadStart];
     }
 }
@@ -670,6 +684,38 @@ NSInteger s_maxEvaluateNum = 0;
     else
     {
         [self.vc_myevaluate DataLoadOver];
+    }
+}
+
+-(void)TimeLineOneData:(id)data Tag:(NSInteger)tag
+{
+    NSString *tid = [data objectForKey:CI_TID];
+    if (tid == nil || tid.length == 0) {
+        return;
+    }
+    /**
+     *  替换所有相关的tid
+     */
+    for (int i = 0; i < self.timeline_datas.count; ++i)
+    {
+        if ([tid isEqualToString:[[self.timeline_datas objectAtIndex:i] objectForKey:CI_TID]])
+        {
+            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:data];
+            [dic setValue:[[self.timeline_datas objectAtIndex:i] objectForKey:CI_PID]
+                   forKey:CI_PID];
+            [self.timeline_datas replaceObjectAtIndex:i withObject:dic];
+            [self.vc_timeline ReloadTableViewWithData:self.timeline_datas];
+            break;
+        }
+    }
+    for (int i = 0; i < self.trend_datas.count; ++i)
+    {
+        if ([tid isEqualToString:[[self.trend_datas objectAtIndex:i] objectForKey:CI_TID]])
+        {
+            [self.trend_datas replaceObjectAtIndex:i withObject:data];
+            [self.vc_myevaluate ReloadTableViewWithData:self.trend_datas];
+            break;
+        }
     }
 }
 

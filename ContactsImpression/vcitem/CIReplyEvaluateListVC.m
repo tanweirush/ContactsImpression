@@ -116,6 +116,36 @@ static int s_tag = 0;
     return [CIReplyEvaluateListItemVC LabelHeighWithText:[self.datas objectAtIndex:indexPath.row]];
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    static CGFloat last_y = 0.0;
+    static int downORup = 0;
+    if (scrollView.contentOffset.y > last_y + 30)
+    {//向上
+        last_y = scrollView.contentOffset.y;
+        if (downORup != 1)
+        {
+            downORup = 1;
+            if ([self.delegate respondsToSelector:@selector(ScrollUp:)])
+            {
+                [self.delegate ScrollUp:self];
+            }
+        }
+    }
+    else if (scrollView.contentOffset.y < last_y - 60)
+    {//向下50
+        last_y = scrollView.contentOffset.y;
+        if (downORup != 2)
+        {
+            downORup = 2;
+            if ([self.delegate respondsToSelector:@selector(ScrollDown:)])
+            {
+                [self.delegate ScrollDown:self];
+            }
+        }
+    }
+}
+
 - (void)addReply:(NSString*)newReply
 {
     [self.datas insertObject:newReply atIndex:0];
