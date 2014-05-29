@@ -47,7 +47,7 @@ extern NSInteger s_maxReadNum;
     UIBarButtonItem *leftBar = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = leftBar;
     
-    CITitleV *title = [[CITitleV alloc] initWithTitle:@"填个手机号码"];
+    CITitleV *title = [[CITitleV alloc] initWithTitle:@"啊哦，你是？"];
     [self.navigationItem setTitleView:title];
     
     [self.tf_phone setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)]];

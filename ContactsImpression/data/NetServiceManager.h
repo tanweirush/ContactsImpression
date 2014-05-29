@@ -12,10 +12,10 @@
 
 #ifndef DEBUG_TAN
 
-//#define XU_HTTP_HEAD @"http://szd.ssimp.net/client" //http请求地址
-//#define XU_IMG_HEAD @"http://szd.ssimp.net" //图片请求地址
-#define XU_HTTP_HEAD @"http://szd-pre.ssimp.net/client" //http请求地址
+#define XU_HTTP_HEAD @"http://szd.ssimp.net/client" //http请求地址
 #define XU_IMG_HEAD @"http://szd.ssimp.net" //图片请求地址
+//#define XU_HTTP_HEAD @"http://szd-pre.ssimp.net/client" //http请求地址
+//#define XU_IMG_HEAD @"http://szd.ssimp.net" //图片请求地址
 
 #else
 

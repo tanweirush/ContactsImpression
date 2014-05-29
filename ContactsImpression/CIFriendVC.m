@@ -95,6 +95,10 @@ static int s_tag = 0;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.iPage = 0;
+    [self.nets removeAllObjects];
+    [self.datas removeAllObjects];
+    self.vc_setEvaluate = nil;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -131,11 +135,7 @@ static int s_tag = 0;
     for (NetServiceManager *net in self.nets) {
         [net CancelRequest];
     }
-    [self.nets removeAllObjects];
-    [self.datas removeAllObjects];
     [self.navigationController popViewControllerAnimated:YES];
-    self.personData = nil;
-    self.vc_setEvaluate = nil;
 }
 
 -(void)OnEdit:(id)sender

@@ -19,7 +19,8 @@
         UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, TITLE_W, 44)];
         [t setTextColor:UIColorFromARGB(0xffffffff)];
         [t setTextAlignment:NSTextAlignmentCenter];
-        [t setFont:[UIFont systemFontOfSize:20.0f]];
+        [t setFont:[UIFont systemFontOfSize:18.0f]];
+//        [t setFont:[UIFont fontWithName:@"AmericanTypewriter" size:20]];
         [t setText:title];
         [self addSubview:t];
         self.title = t;
