@@ -30,23 +30,13 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoN-BE-coB">
-                    <rect key="frame" x="130" y="268" width="60" height="60"/>
+                    <rect key="frame" x="130" y="338" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="suggestion.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="OnFeedback:" destination="-1" eventType="touchUpInside" id="aGX-E2-Y2M"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDX-c3-WCm">
-                    <rect key="frame" x="130" y="348" width="60" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" backgroundImage="appstore.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="OnGoScore:" destination="-1" eventType="touchUpInside" id="N4B-YG-dbn"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dB-WO-jW6">
@@ -60,32 +50,29 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="propaganda.png" translatesAutoresizingMaskIntoConstraints="NO" id="TPJ-KP-log">
-                    <rect key="frame" x="32" y="75" width="257" height="143"/>
+                    <rect key="frame" x="0.0" y="118" width="320" height="150"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.047058823530000002" green="0.37647058820000001" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="OoN-BE-coB" firstAttribute="top" secondItem="TPJ-KP-log" secondAttribute="bottom" constant="50" id="0Px-7O-lTs"/>
-                <constraint firstItem="6dB-WO-jW6" firstAttribute="top" secondItem="WDX-c3-WCm" secondAttribute="bottom" constant="20" id="4Z8-Qg-dwu"/>
+                <constraint firstItem="OoN-BE-coB" firstAttribute="top" secondItem="TPJ-KP-log" secondAttribute="bottom" constant="70" id="0Px-7O-lTs"/>
                 <constraint firstAttribute="bottom" secondItem="6dB-WO-jW6" secondAttribute="bottom" constant="80" id="Bba-MD-b9x"/>
-                <constraint firstItem="WDX-c3-WCm" firstAttribute="top" secondItem="OoN-BE-coB" secondAttribute="bottom" constant="20" id="HXJ-Ct-DCn"/>
                 <constraint firstItem="N6s-V5-Lgh" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="5" id="Icy-z5-ISU"/>
+                <constraint firstItem="6dB-WO-jW6" firstAttribute="top" secondItem="OoN-BE-coB" secondAttribute="bottom" constant="30" id="OKY-yH-qxy"/>
                 <constraint firstAttribute="centerX" secondItem="OoN-BE-coB" secondAttribute="centerX" id="Rq2-9g-XSO"/>
-                <constraint firstItem="OoN-BE-coB" firstAttribute="centerX" secondItem="WDX-c3-WCm" secondAttribute="centerX" id="fvY-G3-wwI"/>
-                <constraint firstItem="6dB-WO-jW6" firstAttribute="centerX" secondItem="WDX-c3-WCm" secondAttribute="centerX" id="gEj-IQ-GRv"/>
                 <constraint firstAttribute="bottom" secondItem="N6s-V5-Lgh" secondAttribute="bottom" constant="10" id="iB2-9r-WgM"/>
                 <constraint firstAttribute="centerX" secondItem="TPJ-KP-log" secondAttribute="centerX" id="q5i-uR-o6F"/>
+                <constraint firstAttribute="centerX" secondItem="6dB-WO-jW6" secondAttribute="centerX" id="ucJ-k1-Tdh"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>
-        <image name="appstore.png" width="60" height="60"/>
         <image name="exit.png" width="60" height="60"/>
         <image name="more.png" width="25" height="25"/>
-        <image name="propaganda.png" width="257" height="143"/>
+        <image name="propaganda.png" width="320" height="150"/>
         <image name="suggestion.png" width="60" height="60"/>
     </resources>
 </document>

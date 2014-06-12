@@ -181,7 +181,7 @@ extern NSInteger s_maxReadNum;
         {
             return [NSString stringWithFormat:@"今日查看\n已达上限"];
         }
-        return [NSString stringWithFormat:@"评价好友\n可查看更多"];
+        return [NSString stringWithFormat:@"说说老友\n可查看更多"];
     }
     return [NSString stringWithFormat:@"今日剩余%ld条\n点击查看", (long)c];
 }

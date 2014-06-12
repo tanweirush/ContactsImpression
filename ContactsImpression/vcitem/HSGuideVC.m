@@ -29,26 +29,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.s
     CGSize size = [[UIScreen mainScreen] bounds].size;
-    int count = 5;
-    [self.sv_root setContentSize:CGSizeMake(count * size.width, size.height)];
     
-    for (int i = 0; i < count; ++i)
+    int count = 0;
+    while (YES)
     {
-        NSString *file = [NSString stringWithFormat:@"page_%d.png", i];
+        NSString *file = [NSString stringWithFormat:@"page_%d.png", count];
         UIImage *img = [UIImage imageNamed:file];
         if (!img) {
-            [self.view setHidden:YES];
-            return;
+            break;
         }
-        CGRect rt = CGRectMake(i * size.width, 0,
+        CGRect rt = CGRectMake(count * size.width, 0,
                                size.width,
-                               img.size.height);
+                               size.height);
         UIImageView *iv = [[UIImageView alloc] initWithFrame:rt];
         [iv setImage:img];
         
         [self.sv_root insertSubview:iv atIndex:0];
+        
+        ++count;
     }
     
+    [self.sv_root setFrame:CGRectMake(0, 0, size.width, size.height)];
+    [self.sv_root setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self.sv_root setContentSize:CGSizeMake(count * size.width, size.height)];
     CGRect rt = self.btn.frame;
     rt.origin.x = rt.origin.x + (count - 1)*size.width;
     rt.origin.y = size.height - 40 - self.btn.frame.size.height;
@@ -59,6 +62,21 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+-(BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 -(IBAction)OnStart:(id)sender

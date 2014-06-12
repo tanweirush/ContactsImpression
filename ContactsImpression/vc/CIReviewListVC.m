@@ -135,6 +135,7 @@ NSInteger s_maxEvaluateNum = 0;
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     if (self.bIsLogoutBack)
     {//退出后返回
         self.bIsLogoutBack = NO;
@@ -410,10 +411,6 @@ NSInteger s_maxEvaluateNum = 0;
 {
     CIReadEvaluateVC *vc = [[CIReadEvaluateVC alloc] initWithData:data
                                                              Type:evaluateListVC.type];
-//    [self.navigationController pushViewController:vc
-//                                   TransitionType:@"push"
-//                                          SubType:@"fromRight"];
-    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -590,19 +587,18 @@ NSInteger s_maxEvaluateNum = 0;
     
     if (r == Return_NeedRelogin)
     {//服务器端session和客户端对应不上，需要客户端重新上传手机号码
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
         NSString *s = [UserDef getUserDefValue:USER_SESSION];
-        [UserDef setUserDefValue:date keyName:LASTUPDATE(s)];
+        [UserDef setUserDefValue:@"" keyName:USER_NAME];
+        [UserDef setUserDefValue:@"" keyName:USER_SESSION];
+        [UserDef removeObjectForKey:LASTUPDATE(s)];
         if (nil == self.contactData)
         {
             self.contactData = [[CIContactData alloc] init];
             [self.contactData setDelegate:self];
         }
         [self.contactData UpdateData];
+        [self HideLoadView];
         
-        ++self.iNeedHideLoad;
-        [self.loadding setTipText:@"联系好友中"];
-        [self.loadding show];
         [self.vc_timeline DataLoadOver];
         [self.vc_myevaluate DataLoadOver];
     }
@@ -626,6 +622,7 @@ NSInteger s_maxEvaluateNum = 0;
     }
     else
     {
+        [self HideLoadView];
         [self.vc_timeline DataLoadOver];
         [self.vc_myevaluate DataLoadOver];
     }

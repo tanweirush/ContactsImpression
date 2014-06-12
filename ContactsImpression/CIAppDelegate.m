@@ -31,17 +31,13 @@
         self.vc_guide = [[HSGuideVC alloc] init];
         [self.vc_guide setDelegate:self];
         [self.root pushViewController:self.vc_guide animated:NO];
-        
         [self.root.navigationBar setHidden:YES];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
     }
     else
     {
         [self.root.navigationBar setHidden:NO];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
     }
     [UserDef setUserDefValue:app_Version keyName:USER_LOCALVERSION];
-    
     
     self.window.rootViewController = self.root;
     self.window.backgroundColor = [UIColor whiteColor];
@@ -149,7 +145,6 @@
                         } completion:^(BOOL finished) {
                             [self.root popViewControllerAnimated:NO];
                             self.vc_guide = nil;
-                            [[UIApplication sharedApplication] setStatusBarHidden:NO];
                             [self.root.navigationBar setHidden:NO];
                         }];
         
