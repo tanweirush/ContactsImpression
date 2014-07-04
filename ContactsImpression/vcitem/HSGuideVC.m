@@ -50,6 +50,7 @@
     }
     
     [self.sv_root setFrame:CGRectMake(0, 0, size.width, size.height)];
+    [self.view setFrame:CGRectMake(0, 0, size.width, size.height)];
     [self.sv_root setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self.sv_root setContentSize:CGSizeMake(count * size.width, size.height)];
     CGRect rt = self.btn.frame;

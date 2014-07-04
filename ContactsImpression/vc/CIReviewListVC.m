@@ -7,6 +7,7 @@
 //
 
 #import "CIReviewListVC.h"
+#import "UserDef.h"
 #import "PushViewController+UINavigationController.h"
 #import "CITitleV.h"
 #import "CIContactData.h"
@@ -647,7 +648,7 @@ NSInteger s_maxEvaluateNum = 0;
         }
         else
         {
-            [self.vc_timeline DataLoadOver];
+            [self.vc_timeline ReloadTableViewWithData:self.timeline_datas];
         }
     }
     else
@@ -675,7 +676,7 @@ NSInteger s_maxEvaluateNum = 0;
         }
         else
         {
-            [self.vc_myevaluate DataLoadOver];
+            [self.vc_myevaluate ReloadTableViewWithData:self.trend_datas];
         }
     }
     else

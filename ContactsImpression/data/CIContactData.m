@@ -7,6 +7,7 @@
 //
 
 #import "CIContactData.h"
+#import "UserDef.h"
 
 static NSMutableArray *s_listContacts;
 

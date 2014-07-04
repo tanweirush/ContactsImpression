@@ -7,6 +7,7 @@
 //
 
 #import "CIMoreVC.h"
+#import "UserDef.h"
 #import "PushViewController+UINavigationController.h"
 #import "CIFeedbackVC.h"
 #import "HSLoaddingVC.h"
@@ -198,7 +199,7 @@ extern NSInteger s_maxReadNum;
 
 -(void)LogoutResetDataWithData:(id)data
 {
-    if (data != nil && [[NSNull null] isEqual:data])
+    if (data != nil && ![[NSNull null] isEqual:data])
     {
         NSString *s = [data objectForKey:CTRL_Session];
         if (s && s.length > 0)

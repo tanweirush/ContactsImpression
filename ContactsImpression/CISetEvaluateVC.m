@@ -7,6 +7,7 @@
 //
 
 #import "CISetEvaluateVC.h"
+#import "UserDef.h"
 #import "PushViewController+UINavigationController.h"
 #import "PersonData.h"
 #import "CITitleV.h"

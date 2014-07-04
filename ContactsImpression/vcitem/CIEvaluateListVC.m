@@ -7,6 +7,7 @@
 //
 
 #import "CIEvaluateListVC.h"
+#import "UserDef.h"
 #import "CIContactData.h"
 #import "CINoEvaluateItemVC.h"
 #import "CIReviewListVC.h"
@@ -77,6 +78,10 @@ extern NSInteger s_maxReadNum;
 {
     self.tbv.pullTableIsRefreshing = NO;
     self.tbv.pullTableIsLoadingMore = NO;
+    if ([self.delegate respondsToSelector:@selector(ScrollDown:)])
+    {
+        [self.delegate ScrollDown:self];
+    }
 }
 
 //tableview
@@ -241,7 +246,11 @@ extern NSInteger s_maxReadNum;
 {
     static CGFloat last_y = 0.0;
     static int downORup = 0;
-    if (scrollView.contentOffset.y > last_y + 30)
+    if (scrollView.contentOffset.y < 0)
+    {
+        return;
+    }
+    else if (scrollView.contentOffset.y > last_y + 30)
     {//向上
         last_y = scrollView.contentOffset.y;
         if (downORup != 1)
@@ -263,6 +272,13 @@ extern NSInteger s_maxReadNum;
             {
                 [self.delegate ScrollDown:self];
             }
+        }
+    }
+    else if (scrollView.contentOffset.y == 0)
+    {
+        if ([self.delegate respondsToSelector:@selector(ScrollDown:)])
+        {
+            [self.delegate ScrollDown:self];
         }
     }
 }

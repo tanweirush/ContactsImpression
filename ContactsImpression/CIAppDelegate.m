@@ -7,6 +7,7 @@
 //
 
 #import "CIAppDelegate.h"
+#import "UserDef.h"
 
 @interface CIAppDelegate ()
 

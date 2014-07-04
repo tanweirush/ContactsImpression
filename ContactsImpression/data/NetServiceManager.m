@@ -9,6 +9,7 @@
 #import "NetServiceManager.h"
 #import "UserDef.h"
 #import "JSONKit.h"
+//#import "ZipArchive.h"
 
 
 #define XU_URL(t) [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", XU_HTTP_HEAD, t]]
@@ -161,6 +162,58 @@ static NSDate *s_time;
     {
         [postData setValue:s forKey:CTRL_Session];
     }
+    
+//    BOOL bZip = YES;
+//    
+//    ZipArchive* zip = [[ZipArchive alloc] init];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//    NSString *dcoumentpath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+//    NSString* l_zipfile = [dcoumentpath stringByAppendingString:@"/contacttmp.zip"];
+//    NSString* unzipdata = [dcoumentpath stringByAppendingString:@"/contactzip"] ;
+//    if (![[postData JSONData] writeToFile:unzipdata atomically:YES])
+//    {//写文件失败
+//        bZip = NO;
+//    }
+//    
+//    if (bZip && ![zip CreateZipFile2:l_zipfile])
+//    {//创建ZIP文件失败
+//        bZip = NO;
+//    }
+//    
+//    if (bZip && ![zip addFileToZip:unzipdata newname:@"contactzip"])
+//    {//压缩失败
+//        bZip = NO;
+//    }
+//    if (bZip && ![zip CloseZipFile2] )
+//    {//关闭zip文件失败
+//        l_zipfile = @"";
+//        bZip = NO;
+//    }
+//    
+//    NSData *data = nil;
+//    if (bZip)
+//    {
+//        data = [NSData dataWithContentsOfFile:l_zipfile];
+//    }
+//    else
+//    {
+//        data = [postData JSONData];
+//    }
+//    NSData *unzipData = [postData JSONData];
+//    
+//    NSString *str = [NSString stringWithFormat:@"压缩节省了空间：%lu byte", unzipData.length - data.length];
+//    
+//    
+//    NSLog(str);
+    
+//    zip = [[ZipArchive alloc] init];
+//    if( [zip UnzipOpenFile:l_zipfile] )
+//    {
+//        ret = [zip UnzipFileTo:dcoumentpath overWrite:YES];
+//        if( NO==ret ) { }
+//        [zip UnzipCloseFile];
+//    }
+//    data = [NSData dataWithContentsOfFile:unzipdata];
     
     NSURL *url = XU_URL(XU_ACTION_UPDATECONTACT);
     ASIFormDataRequest* request = [ASIFormDataRequest requestWithURL:url];

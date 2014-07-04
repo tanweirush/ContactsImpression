@@ -7,6 +7,7 @@
 //
 
 #import "CIEvaluateListItemVC.h"
+#import "UserDef.h"
 #import "CIContactData.h"
 
 @interface CIEvaluateListItemVC ()

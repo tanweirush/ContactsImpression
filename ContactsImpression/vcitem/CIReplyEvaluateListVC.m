@@ -7,6 +7,7 @@
 //
 
 #import "CIReplyEvaluateListVC.h"
+#import "UserDef.h"
 #import "CIReplyEvaluateListItemVC.h"
 
 static int s_tag = 0;

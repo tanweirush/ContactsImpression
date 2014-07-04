@@ -147,6 +147,11 @@
 		7C99622F18DFFCAA007F57F4 /* my_news_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C99622B18DFFCAA007F57F4 /* my_news_hover@2x.png */; };
 		7C99623018DFFCAA007F57F4 /* others_news_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C99622C18DFFCAA007F57F4 /* others_news_hover@2x.png */; };
 		7C99623118DFFCAA007F57F4 /* others_news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C99622D18DFFCAA007F57F4 /* others_news@2x.png */; };
+		7C9C5B0B194EC2DB00FF0154 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C5B01194EC2DB00FF0154 /* ioapi.c */; };
+		7C9C5B0C194EC2DB00FF0154 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C5B03194EC2DB00FF0154 /* mztools.c */; };
+		7C9C5B0D194EC2DB00FF0154 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C5B05194EC2DB00FF0154 /* unzip.c */; };
+		7C9C5B0E194EC2DB00FF0154 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C5B07194EC2DB00FF0154 /* zip.c */; };
+		7C9C5B0F194EC2DB00FF0154 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C5B0A194EC2DB00FF0154 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CA2568B192DCDD800B4B04E /* good_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CA25689192DCDD800B4B04E /* good_hover@2x.png */; };
 		7CA2568C192DCDD800B4B04E /* good@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CA2568A192DCDD800B4B04E /* good@2x.png */; };
 		7CA2568E192DD05D00B4B04E /* talk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CA2568D192DD05D00B4B04E /* talk@2x.png */; };
@@ -351,6 +356,17 @@
 		7C99622B18DFFCAA007F57F4 /* my_news_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my_news_hover@2x.png"; sourceTree = "<group>"; };
 		7C99622C18DFFCAA007F57F4 /* others_news_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "others_news_hover@2x.png"; sourceTree = "<group>"; };
 		7C99622D18DFFCAA007F57F4 /* others_news@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "others_news@2x.png"; sourceTree = "<group>"; };
+		7C9C5B00194EC2DB00FF0154 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		7C9C5B01194EC2DB00FF0154 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		7C9C5B02194EC2DB00FF0154 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		7C9C5B03194EC2DB00FF0154 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		7C9C5B04194EC2DB00FF0154 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		7C9C5B05194EC2DB00FF0154 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		7C9C5B06194EC2DB00FF0154 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		7C9C5B07194EC2DB00FF0154 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		7C9C5B08194EC2DB00FF0154 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		7C9C5B09194EC2DB00FF0154 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		7C9C5B0A194EC2DB00FF0154 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 		7CA25689192DCDD800B4B04E /* good_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "good_hover@2x.png"; sourceTree = "<group>"; };
 		7CA2568A192DCDD800B4B04E /* good@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "good@2x.png"; sourceTree = "<group>"; };
 		7CA2568D192DD05D00B4B04E /* talk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talk@2x.png"; sourceTree = "<group>"; };
@@ -468,6 +484,7 @@
 		7C2D694518B5F7A1001380DF /* ContactsImpression */ = {
 			isa = PBXGroup;
 			children = (
+				7C9C5AFE194EC2DB00FF0154 /* ZipArchive */,
 				7C99621118DFD262007F57F4 /* image */,
 				7CBDDDDF18C41FCF0080F176 /* JsonKit */,
 				7CBDDDB118C41F1A0080F176 /* ASIHTTPRequest */,
@@ -748,6 +765,32 @@
 			path = vcitem;
 			sourceTree = "<group>";
 		};
+		7C9C5AFE194EC2DB00FF0154 /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C5AFF194EC2DB00FF0154 /* minizip */,
+				7C9C5B09194EC2DB00FF0154 /* ZipArchive.h */,
+				7C9C5B0A194EC2DB00FF0154 /* ZipArchive.mm */,
+			);
+			path = ZipArchive;
+			sourceTree = "<group>";
+		};
+		7C9C5AFF194EC2DB00FF0154 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C5B00194EC2DB00FF0154 /* crypt.h */,
+				7C9C5B01194EC2DB00FF0154 /* ioapi.c */,
+				7C9C5B02194EC2DB00FF0154 /* ioapi.h */,
+				7C9C5B03194EC2DB00FF0154 /* mztools.c */,
+				7C9C5B04194EC2DB00FF0154 /* mztools.h */,
+				7C9C5B05194EC2DB00FF0154 /* unzip.c */,
+				7C9C5B06194EC2DB00FF0154 /* unzip.h */,
+				7C9C5B07194EC2DB00FF0154 /* zip.c */,
+				7C9C5B08194EC2DB00FF0154 /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
 		7CBDDDB118C41F1A0080F176 /* ASIHTTPRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,6 +1058,7 @@
 				7CF3C64218EA82FB00423101 /* CIEvaluateListItemVC.m in Sources */,
 				7C8DEEED18E4167B00608E6E /* EGORefreshTableHeaderView.m in Sources */,
 				7CBDDDD718C41F240080F176 /* NetServiceManager.m in Sources */,
+				7C9C5B0D194EC2DB00FF0154 /* unzip.c in Sources */,
 				7C46206318E2C2D600D138AC /* CIMoreVC.m in Sources */,
 				7CBDDDCF18C41F1A0080F176 /* ASIInputStream.m in Sources */,
 				7C55093D19305A4300BDB916 /* CIReplyEvaluateListVC.m in Sources */,
@@ -1036,16 +1080,20 @@
 				7CBDDDDB18C41F720080F176 /* NSMutableArray+RemoveWithTag.m in Sources */,
 				7CD8E03518E9665800D759E6 /* CISetEvaluateVC.m in Sources */,
 				7C2D694C18B5F7A1001380DF /* main.m in Sources */,
+				7C9C5B0B194EC2DB00FF0154 /* ioapi.c in Sources */,
 				7CBDDDD018C41F1A0080F176 /* ASINetworkQueue.m in Sources */,
 				7C99622518DFDDA6007F57F4 /* CITitleV.m in Sources */,
 				7C8DEEEE18E4167B00608E6E /* LoadMoreTableFooterView.m in Sources */,
 				7CBDDDC918C41F1A0080F176 /* ASIAuthenticationDialog.m in Sources */,
 				7CBDDDE218C41FCF0080F176 /* JSONKit.m in Sources */,
 				7CD8E02E18E95D6D00D759E6 /* CIFriendVC.m in Sources */,
+				7C9C5B0C194EC2DB00FF0154 /* mztools.c in Sources */,
 				7CD8E02218E930A400D759E6 /* CIContactListTVC.m in Sources */,
 				7CBDDDCD18C41F1A0080F176 /* ASIFormDataRequest.m in Sources */,
 				7C55094219306E3500BDB916 /* CIReplyEvaluateListItemVC.m in Sources */,
+				7C9C5B0E194EC2DB00FF0154 /* zip.c in Sources */,
 				7C6E18E718B70FA10045962A /* PersonData.m in Sources */,
+				7C9C5B0F194EC2DB00FF0154 /* ZipArchive.mm in Sources */,
 				7CD8E02918E9409200D759E6 /* CIEvaluateListVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
